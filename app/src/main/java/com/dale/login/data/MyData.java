@@ -1,5 +1,7 @@
 package com.dale.login.data;
 
-public class MyData {
+import java.util.TreeSet;
 
+public class MyData {
+	TreeSet<LoadedData> loadedData = new TreeSet<LoadedData>();
 }

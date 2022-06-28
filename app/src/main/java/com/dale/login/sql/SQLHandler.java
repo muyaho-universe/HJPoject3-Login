@@ -2,12 +2,12 @@ package com.dale.login.sql;
 
 import java.sql.*;
 
-//String u_id = resultSet.getString(2);
-//String password = resultSet.getString(3);
-//String name = resultSet.getString(4);
-//String gender = resultSet.getString(5);
-//int phoneNumber = resultSet.getInt(6);
-//Date date = resultSet.getDate(7);
+//String u_id = resultSet.getString(1);
+//String password = resultSet.getString(2);
+//String name = resultSet.getString(3);
+//String gender = resultSet.getString(4);
+//int phoneNumber = resultSet.getInt(5);
+//String date = resultSet.getDate(6);
 //System.out.println(u_id + " " + password + " " + name + " " + gender + " " + phoneNumber + " " + date);
 
 public class SQLHandler {
@@ -15,7 +15,7 @@ public class SQLHandler {
 	private static String root = "root";
 	private static String myPW = "Dale9804!";
 	
-	public static boolean selectID(String id) { // 아이디 중복 확인용
+	public static boolean isIDExisted(String id) { // 아이디 중복 확인용
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
@@ -75,7 +75,7 @@ public class SQLHandler {
 		return isExisted;
 	}
 	
-	public static void insert(String id, String password, String name, String gender, int phoneNumber, Date birthDate){
+	public static void insert(String id, String password, String name, String gender, int phoneNumber, String birthDate){
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -95,17 +95,17 @@ public class SQLHandler {
 			// pstmt = conn.prepareStatement(sql); 로 작성하여 데이터를 추가할 것임을 알립니다.
 			// 물론 sql 쿼리 내에서 + 연산자로 한 줄로 작성할 수 있지만 가독성이 너무 떨어지게 되므로
 			// 이 방법을 권합니다.
-			String sql = "INSERT INTO pet VALUES (?,?,?,?,?,?)";
+			String sql = "INSERT INTO users VALUES (?,?,?,?,?,?)";
 			preparedStatement = connection.prepareStatement(sql);
 
 
 			// 4. 데이터 binding
-			preparedStatement.setString(2, id);
-			preparedStatement.setString(3, password);
-			preparedStatement.setString(4, name);
-			preparedStatement.setString(5, gender);
-			preparedStatement.setInt(6, phoneNumber);
-			preparedStatement.setDate(7, birthDate);
+			preparedStatement.setString(1, id);
+			preparedStatement.setString(2, password);
+			preparedStatement.setString(3, name);
+			preparedStatement.setString(4, gender);
+			preparedStatement.setInt(5, phoneNumber);
+			preparedStatement.setString(6, birthDate);
 			
 			
 			// 5. 쿼리 실행 및 결과 처리
@@ -137,5 +137,64 @@ public class SQLHandler {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static void select() {
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet resultSet = null;
+		
+		try{
+            // 1. 드라이버 로딩
+            // 드라이버 인터페이스를 구현한 클래스를 로딩
+            // mysql, oracle 등 각 벤더사 마다 클래스 이름이 다르다.
+            // mysql은 "com.mysql.jdbc.Driver"이며, 이는 외우는 것이 아니라 구글링하면 된다.
+            // 참고로 이전에 연동했던 jar 파일을 보면 com.mysql.jdbc 패키지에 Driver 라는 클래스가 있다.
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // 2. 연결하기
+            // 드라이버 매니저에게 Connection 객체를 달라고 요청한다.
+            // Connection을 얻기 위해 필요한 url 역시, 벤더사마다 다르다.
+            // mysql은 "jdbc:mysql://localhost/사용할db이름" 이다.
+//            String url = "jdbc:mysql://localhost/login";
+
+            // @param  getConnection(url, userName, password);
+            // @return Connection
+            connection = DriverManager.getConnection(url, root, myPW);
+            statement = connection.createStatement();
+            
+            System.out.println("연결 성공");
+            String sql = "SELECT * FROM users";
+            
+            // 5. 쿼리 수행
+            // 레코드들은 ResultSet 객체에 추가된다.
+            resultSet = statement.executeQuery(sql);
+            
+         // 6. 실행결과 출력하기
+            
+            
+            while (resultSet.next()) {
+               // 레코드의 칼럼은 배열과 달리 0부터 시작하지 않고 1부터 시작한다.
+               // 데이터베이스에서 가져오는 데이터의 타입에 맞게 getString 또는 getInt 등을 호출한다.
+            	String u_id = resultSet.getString(2);
+            	System.out.println(u_id);
+            }
+        }
+        catch(ClassNotFoundException e){
+            System.out.println("드라이버 로딩 실패");
+        }
+        catch(SQLException e){
+            System.out.println("에러: " + e);
+        }
+        finally{
+            try{
+                if( connection != null && !connection.isClosed()){
+                	connection.close();
+                }
+            }
+            catch( SQLException e){
+                e.printStackTrace();
+            }
+        }
 	}
 }
