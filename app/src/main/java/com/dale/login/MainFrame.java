@@ -1,6 +1,7 @@
 package com.dale.login;
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GraphicsConfiguration;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -17,6 +18,7 @@ public class MainFrame extends JFrame {
 	public static int monitorHeight;
 	public static int windwowWidth;
 	public static int windwowHeight;
+	
 	private static final String TITLE = "로그인 모듈";
 	
 	private HomePanel homePanel = null;
