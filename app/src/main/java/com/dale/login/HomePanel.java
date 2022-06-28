@@ -1,11 +1,14 @@
 package com.dale.login;
 
-import java.awt.Color;
+import java.awt.*;
 
 import javax.swing.*;
 
+import com.dale.login.buttons.DesignedButton;
+
 public class HomePanel extends JPanel {
-	private JButton signUp;
+	private DesignedButton signUp;
+	private TextField idField;
 	
 	HomePanel(){
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -15,14 +18,21 @@ public class HomePanel extends JPanel {
 	}
 	
 	public void createPanel() {
-		signUp = new JButton("회원가입");
-		signUp.setSize(400, 55);
+		idField = new TextField();
+		signUp = new DesignedButton("회원가입");
+		
 		signUp.setAlignmentX(CENTER_ALIGNMENT);
 		signUp.setBackground(Color.ORANGE);
+		this.add(idField);
 		this.add(signUp);
 	}
 	
 	public JButton getSignUpButton() {
 		return signUp;
 	}
+	
+	public TextField getIDField() {
+		return idField;
+	}
+	
 }
