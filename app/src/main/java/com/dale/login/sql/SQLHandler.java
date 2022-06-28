@@ -73,7 +73,7 @@ public class SQLHandler {
             }
         }
 		return isExisted;
-	}
+	}//END POINT: isIDExisted
 	
 	public static void insert(String id, String password, String name, String gender, int phoneNumber, String birthDate){
 		Connection connection = null;
@@ -139,7 +139,7 @@ public class SQLHandler {
 		}
 	}
 	
-	public static void select() {
+	public static void selectAll() {
 		Connection connection = null;
 		Statement statement = null;
 		ResultSet resultSet = null;
@@ -171,7 +171,7 @@ public class SQLHandler {
             resultSet = statement.executeQuery(sql);
             
          // 6. 실행결과 출력하기
-            
+            // 전체 결과 loadedData에 집어 넣고 그거 출력시키기
             
             while (resultSet.next()) {
                // 레코드의 칼럼은 배열과 달리 0부터 시작하지 않고 1부터 시작한다.
@@ -196,5 +196,40 @@ public class SQLHandler {
                 e.printStackTrace();
             }
         }
-	}
+	} //END POINT: selectAll
+	
+	public static int loginSelect(String id, String password) {
+		int result = 0;
+		
+		//SELECT u_id, u_password FROM users where u_id = id;
+		//if(password.equals(restul.gettoString(2) c = 1; else c =-1;
+		
+		return result;
+	} //END POINT: loginSelect
+	
+	public static void update(String password, String name) {
+		//UPDATE
+	} //END POINT: loginSelect
+	
+	public static void signOut(String id) {
+		//DELETE * FROM users where u_id = id;
+	}//END POINT: signOut
+	
+	public static void loadUser(String id) {
+		//SELECT * FROM users where u_id = id;
+	}//END POINT: loadUser
+	
+	public static void deleteAll() {
+		//DELET * FROM users where not u_id = "admin";
+	}//END POINT: deleteAll
+	
+	public static String findID(String name, String phoneNumber) {
+		String return_id = "null";
+		return return_id;
+	}//END POINT: findID
+	
+	public static String findPassword(String id, String name, String phoneNumber) {
+		String return_password = "null";
+		return return_password;
+	}//END POINT: findPassword
 }
