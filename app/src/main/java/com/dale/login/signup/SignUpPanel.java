@@ -52,6 +52,7 @@ public class SignUpPanel extends JPanel {
 	private String[] months;
 	private String[] days;
 	private String gender = null;
+	private String name = null;
 	private String year;
 	private String month;
 	private String day;
@@ -75,6 +76,86 @@ public class SignUpPanel extends JPanel {
 	private boolean isIDConfirmed = false;
 	private boolean doesPasswordHaveNumber = false;
 	private boolean doesPasswordHaveCapitol = false;
+	public boolean isIDLongEnough() {
+		return isIDLongEnough;
+	}
+
+	public void setIDLongEnough(boolean isIDLongEnough) {
+		this.isIDLongEnough = isIDLongEnough;
+	}
+
+	public boolean isIDConfirmed() {
+		return isIDConfirmed;
+	}
+
+	public void setIDConfirmed(boolean isIDConfirmed) {
+		this.isIDConfirmed = isIDConfirmed;
+	}
+
+	public boolean isDoesPasswordHaveNumber() {
+		return doesPasswordHaveNumber;
+	}
+
+	public void setDoesPasswordHaveNumber(boolean doesPasswordHaveNumber) {
+		this.doesPasswordHaveNumber = doesPasswordHaveNumber;
+	}
+
+	public boolean isDoesPasswordHaveCapitol() {
+		return doesPasswordHaveCapitol;
+	}
+
+	public void setDoesPasswordHaveCapitol(boolean doesPasswordHaveCapitol) {
+		this.doesPasswordHaveCapitol = doesPasswordHaveCapitol;
+	}
+
+	public boolean isDoesPasswordHaveLower() {
+		return doesPasswordHaveLower;
+	}
+
+	public void setDoesPasswordHaveLower(boolean doesPasswordHaveLower) {
+		this.doesPasswordHaveLower = doesPasswordHaveLower;
+	}
+
+	public boolean isPasswordLongEnough() {
+		return isPasswordLongEnough;
+	}
+
+	public void setPasswordLongEnough(boolean isPasswordLongEnough) {
+		this.isPasswordLongEnough = isPasswordLongEnough;
+	}
+
+	public boolean isPasswordSame() {
+		return isPasswordSame;
+	}
+
+	public void setPasswordSame(boolean isPasswordSame) {
+		this.isPasswordSame = isPasswordSame;
+	}
+
+	public boolean isNameFilled() {
+		return isNameFilled;
+	}
+
+	public void setNameFilled(boolean isNameFilled) {
+		this.isNameFilled = isNameFilled;
+	}
+
+	public boolean isGenderSelected() {
+		return isGenderSelected;
+	}
+
+	public void setGenderSelected(boolean isGenderSelected) {
+		this.isGenderSelected = isGenderSelected;
+	}
+
+	public boolean isAgreed() {
+		return isAgreed;
+	}
+
+	public void setAgreed(boolean isAgreed) {
+		this.isAgreed = isAgreed;
+	}
+
 	private boolean doesPasswordHaveLower = false;
 	private boolean isPasswordLongEnough = false;
 	private boolean isPasswordSame = false;
@@ -209,6 +290,7 @@ public class SignUpPanel extends JPanel {
 					doesPasswordHaveNumber = false;
 					doesPasswordHaveCapitol = false;
 					doesPasswordHaveLower = false;
+					isPasswordSame = false;
 					passwordCheck.setForeground(Color.RED);
 				}
 			}
@@ -227,6 +309,7 @@ public class SignUpPanel extends JPanel {
 				else {
 					setVisiblityOnPasswordField.setColor("Hide", Color.GRAY);
 					passwordField.setEchoChar((char)0);
+					
 					isVisiblePasswordField = true;
 				}
 			}
@@ -291,6 +374,15 @@ public class SignUpPanel extends JPanel {
 		nameField = new TextField();
 		nameField.setBounds(MainFrame.windwowWidth* 4 / 100, 315, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		nameField.setFont(arialFont);
+		nameField.addTextListener(new TextListener() {
+
+			@Override
+			public void textValueChanged(TextEvent e) {
+				name = nameField.getText();
+				System.out.println("Name: "+ name);
+			}
+			
+		});
 		
 		togglePanel = new JPanel();
 		genderFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 350, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
@@ -368,15 +460,34 @@ public class SignUpPanel extends JPanel {
 		yearComboBox.addItemListener(new ItemListener(){
             @Override
             public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange()==ItemEvent.SELECTED)
+                if(e.getStateChange()==ItemEvent.SELECTED) {
                 	year = (String) e.getItem();
-                System.out.println(year);
+                	birthday = year + "-" + month + "-" + day;
+                }
             }
         });
 		monthComboBox = new JComboBox(months);
 		monthComboBox.setFont(IDFont);
+		monthComboBox.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED) {
+                	month = (String) e.getItem();
+                	birthday = year + "-" + month + "-" + day;
+                }
+            }
+        });
 		dayComboBox = new JComboBox(days);
 		dayComboBox.setFont(IDFont);
+		dayComboBox.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED) {
+                	day = (String) e.getItem();
+                	birthday = year + "-" + month + "-" + day;
+                }
+            }
+        });
 		birthDayComboPanel = new JPanel();
 		birthDayComboPanel.setLayout(new FlowLayout());
 		birthDayComboPanel.setBounds(MainFrame.windwowWidth* 4 / 100, 480, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
@@ -404,19 +515,6 @@ public class SignUpPanel extends JPanel {
 		signUp = new RoundButton("Make an Account!");
 		signUp.setFont(arialBoldFont);
 		signUp.setBounds(MainFrame.windwowWidth * 4 / 100, 550,  MainFrame.windwowWidth * 88/ 100, MainFrame.windwowHeight * 8 / 100);
-		signUp.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				isNameFilled = nameField.getText().isEmpty();
-				if(isIDConfirmed && doesPasswordHaveNumber && doesPasswordHaveCapitol && doesPasswordHaveLower 
-						&&isPasswordLongEnough && isPasswordSame &&isNameFilled) {
-					
-				}
-				
-			}
-			
-		});
 		
 		this.add(goToBack);
 		this.add(label);
@@ -457,11 +555,23 @@ public class SignUpPanel extends JPanel {
 		return passwordField;
 	}
 		
-	public TextField getNameField() {
-		return nameField;
+	public String getName() {
+		return name;
 	}
-
+		
 	public String getGender() {
 		return gender;
 	}
+	
+	public JFormattedTextField getPhoneNumberField() {
+		return phoneNumberField;
+	}
+	
+	public String getBirthday() {
+		return birthday;
+	}
+	public RoundButton getSignUpButton() {
+		return signUp;
+	}
+	
 }

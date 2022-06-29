@@ -75,13 +75,13 @@ public class SQLHandler {
 		return isExisted;
 	}//END POINT: isIDExisted
 	
-	public static void insert(String id, String password, String name, String gender, int phoneNumber, String birthDate){
+	public static void insert(String id, String password, String name, String gender, String phoneNumber, String birthDate){
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
 		try{
 			// 1. 드라이버 로딩
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			// 2. 연결하기
 			
@@ -98,13 +98,12 @@ public class SQLHandler {
 			String sql = "INSERT INTO users VALUES (?,?,?,?,?,?)";
 			preparedStatement = connection.prepareStatement(sql);
 
-
 			// 4. 데이터 binding
 			preparedStatement.setString(1, id);
 			preparedStatement.setString(2, password);
 			preparedStatement.setString(3, name);
 			preparedStatement.setString(4, gender);
-			preparedStatement.setInt(5, phoneNumber);
+			preparedStatement.setString(5, phoneNumber);
 			preparedStatement.setString(6, birthDate);
 			
 			

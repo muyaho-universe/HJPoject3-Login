@@ -28,6 +28,7 @@ public class MainFrame extends JFrame {
 	private HomePanel homePanel = null;
 	private AdminPanel adminPanel = null;
 	private SignUpPanel signUpPanel = null;
+	private SpecialPanel special = null;
 	JFrame notExistedFrame = null;
 	JFrame wrongPasswordFrame = null;
 	
@@ -57,12 +58,13 @@ public class MainFrame extends JFrame {
 		homePanel = new HomePanel();
 		adminPanel = new AdminPanel();
 		signUpPanel = new SignUpPanel();
-		
+		special = new SpecialPanel();
 		homePanel.createPanel();
 		
 		
 		this.homePanel.getSignUpButton().addActionListener(new ToSignUp());
 		this.homePanel.getLoginButton().addActionListener(new LoginProcedure());
+		this.signUpPanel.getSignUpButton().addActionListener(new SignUp());
 		this.add(homePanel);
 		this.setSize(windwowWidth, windwowHeight);
 		this.setVisible(true);
@@ -215,6 +217,38 @@ public class MainFrame extends JFrame {
 			}
 			System.out.println(whereToGo);
 		}
+	}
+	
+	class SignUp implements ActionListener {
+//		boolean isNameFilled = !MainFrame.this.signUpPanel.getName().isEmpty();
+		boolean isNumberThere = !MainFrame.this.signUpPanel.getPhoneNumberField().getText().isEmpty();
+		boolean isBirthdaySelected = !MainFrame.this.signUpPanel.getBirthday().isEmpty();
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println(MainFrame.this.signUpPanel.getName());
+			System.out.println("MainFrame.this.signUpPanel.isAgreed() "+ MainFrame.this.signUpPanel.isAgreed()+ " MainFrame.this.signUpPanel.isDoesPasswordHaveCapitol() "
+					+MainFrame.this.signUpPanel.isDoesPasswordHaveCapitol()+" MainFrame.this.signUpPanel.isDoesPasswordHaveLower() "+MainFrame.this.signUpPanel.isDoesPasswordHaveLower() +" MainFrame.this.signUpPanel.isDoesPasswordHaveNumber() "
+					+ MainFrame.this.signUpPanel.isDoesPasswordHaveNumber()+" MainFrame.this.signUpPanel.isGenderSelected() " +MainFrame.this.signUpPanel.isGenderSelected() +" MainFrame.this.signUpPanel.isIDConfirmed() " + MainFrame.this.signUpPanel.isIDConfirmed()
+					+ " MainFrame.this.signUpPanel.isIDLongEnough() " + MainFrame.this.signUpPanel.isIDLongEnough() + " isNameFilled "  + " isNumberThere " + isNumberThere + " isBirthdaySelected " + isBirthdaySelected);
+			if(MainFrame.this.signUpPanel.isAgreed() && MainFrame.this.signUpPanel.isDoesPasswordHaveCapitol() 
+					&& MainFrame.this.signUpPanel.isDoesPasswordHaveLower() && MainFrame.this.signUpPanel.isDoesPasswordHaveNumber()
+					&&MainFrame.this.signUpPanel.isGenderSelected() && MainFrame.this.signUpPanel.isIDConfirmed()
+					&&MainFrame.this.signUpPanel.isIDLongEnough() && !MainFrame.this.signUpPanel.getName().isEmpty() &&isNumberThere &&isBirthdaySelected) {
+				String password = new String(MainFrame.this.signUpPanel.getPasswordField().getPassword());
+				SQLHandler.insert(MainFrame.this.signUpPanel.getIDField().getText(), password, MainFrame.this.signUpPanel.getName(), MainFrame.this.signUpPanel.getGender(), MainFrame.this.signUpPanel.getPhoneNumberField().getText(), MainFrame.this.signUpPanel.getBirthday());
+				MainFrame.this.getContentPane().removeAll();
+				MainFrame.this.getContentPane().add(special);
+				revalidate();
+				repaint();
+			}
+			else{
+				System.out.println("\n¿Ãæﬂ»£~~");
+			}
+			
+			
+			
+		}
+		
 	}
 	
 }
