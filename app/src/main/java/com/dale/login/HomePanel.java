@@ -60,6 +60,7 @@ public class HomePanel extends JPanel {
 		
 		welcome.setFont(arialBoldFont);
 		welcome.setHorizontalAlignment(JLabel.CENTER);
+		welcome.setForeground(new Color(61,205,91));
 		welcome.setBounds(MainFrame.windwowWidth* 4 / 100, 50, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		
 		
