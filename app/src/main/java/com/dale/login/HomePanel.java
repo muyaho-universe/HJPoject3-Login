@@ -10,6 +10,7 @@ import javax.swing.text.MaskFormatter;
 
 import com.dale.login.buttons.DesignedButton;
 import com.dale.login.buttons.RoundButton;
+import com.dale.login.data.MyData;
 
 public class HomePanel extends JPanel {
 	private RoundButton signUp;
@@ -133,12 +134,7 @@ public class HomePanel extends JPanel {
 		return idField;
 	}
 	
-	class LoginProcedure implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+	public JPasswordField getPasswordField() {
+		return passwordField;
 	}
 }
