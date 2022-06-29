@@ -2,6 +2,9 @@ package com.dale.login.sql;
 
 import java.sql.*;
 
+import com.dale.login.data.LoadedData;
+import com.dale.login.data.MyData;
+
 //String u_id = resultSet.getString(1);
 //String password = resultSet.getString(2);
 //String name = resultSet.getString(3);
@@ -163,7 +166,7 @@ public class SQLHandler {
             statement = connection.createStatement();
             
             System.out.println("연결 성공");
-            String sql = "SELECT * FROM users";
+            String sql = "SELECT user_id, user_password, user_name, user_gender, user_phonenumber, user_birthdate FROM users";
             
             // 5. 쿼리 수행
             // 레코드들은 ResultSet 객체에 추가된다.
@@ -222,7 +225,7 @@ public class SQLHandler {
             statement = connection.createStatement();
             
             System.out.println("연결 성공");
-            String sql = "SELECT user_id, user_password FROM users where user_id = \'" + id + "\'";
+            String sql = "SELECT user_id, user_password, user_name, user_gender, user_phonenumber, user_birthdate FROM users where user_id = \'" + id + "\'";
             
             // 5. 쿼리 수행
             // 레코드들은 ResultSet 객체에 추가된다.
@@ -238,6 +241,11 @@ public class SQLHandler {
             			result = 2;
             		}
             	}
+            }
+            
+            if(result == 1) {
+            	LoadedData data = new LoadedData(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6));
+            	MyData.loadedData.add(data);
             }
             
 //            while (resultSet.next()) {

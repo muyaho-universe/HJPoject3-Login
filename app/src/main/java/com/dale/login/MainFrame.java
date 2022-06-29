@@ -13,6 +13,7 @@ import com.dale.login.admin.*;
 import com.dale.login.data.MyData;
 import com.dale.login.signup.*;
 import com.dale.login.sql.SQLHandler;
+import com.dale.login.user.UserPanel;
 
 import javax.swing.*;
 
@@ -29,6 +30,7 @@ public class MainFrame extends JFrame {
 	private AdminPanel adminPanel = null;
 	private SignUpPanel signUpPanel = null;
 	private SpecialPanel special = null;
+	private UserPanel userpanel = null;
 	
 	JFrame notExistedFrame = null;
 	JFrame wrongPasswordFrame = null;
@@ -61,15 +63,18 @@ public class MainFrame extends JFrame {
 		adminPanel = new AdminPanel();
 		signUpPanel = new SignUpPanel();
 		special = new SpecialPanel();
+		userpanel = new UserPanel();
 		homePanel.createPanel();
-		
 		
 		this.homePanel.getSignUpButton().addActionListener(new ToSignUp());
 		this.homePanel.getLoginButton().addActionListener(new LoginProcedure());
 		this.signUpPanel.getSignUpButton().addActionListener(new SignUp());
 		this.signUpPanel.getGoToBackButton().addActionListener(new ToHome());
 		this.special.getToHome().addActionListener(new ToHome());
+//		this.userpanel
+		
 //		this.add(special);
+		
 		this.add(homePanel);
 		this.setSize(windwowWidth, windwowHeight);
 		this.setVisible(true);
@@ -220,8 +225,9 @@ public class MainFrame extends JFrame {
 			    wrongPasswordFrame.add(buttonPanel, BorderLayout.SOUTH);
 			}
 			if(whereToGo == 1) {
-//				MainFrame.this.getContentPane().removeAll();
-//				MainFrame.this.getContentPane().add(adminPanel);
+				MainFrame.this.getContentPane().removeAll();
+				userpanel.createPanel();
+				MainFrame.this.getContentPane().add(userpanel);
 				revalidate();
 				repaint();	
 			}
