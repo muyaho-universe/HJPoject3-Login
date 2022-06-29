@@ -14,13 +14,18 @@ import com.dale.login.buttons.RoundButton;
 public class HomePanel extends JPanel {
 	private RoundButton signUp;
 	private RoundButton login;
+	private RoundButton findingID;
+	private RoundButton findingPassword;
 	private TextField idField;
 	private JPasswordField passwordField;
 	private JLabel welcome;
 	private JLabel IDInput;
+	private JLabel findingLabel;
+	private JLabel newToHere;
 	private JLabel passwordInput;
 	private boolean isVisible = false;
 	private RoundButton setVisiblity;
+	private JPanel findIDAndPasswordPanel;
 	
 	Font arialBoldFont = new Font("Arial", Font.BOLD, 30);
 	Font arialFont = new Font("Arial", Font.CENTER_BASELINE, 20);
@@ -35,7 +40,6 @@ public class HomePanel extends JPanel {
 	}
 	
 	public void createPanel() {
-		
 		welcome = new JLabel("Welcome!");
 		idField = new TextField();
 		passwordField = new JPasswordField();
@@ -44,10 +48,13 @@ public class HomePanel extends JPanel {
 		IDInput = new JLabel("Enter your ID: ");
 		passwordInput = new JLabel("Enter your password: ");
 		setVisiblity = new RoundButton("Hide");
+		findingLabel = new JLabel("Did you forget your account ? ");
+		findingID = new RoundButton("Forgot ID", Color.WHITE, false);
+		findingPassword = new RoundButton("Forgot Password", Color.WHITE, false);
+		findIDAndPasswordPanel = new JPanel();
+		newToHere = new JLabel("Are you new to here? ");
 		
-		
-		
-		signUp.setBounds(MainFrame.windwowWidth* 4 / 100, MainFrame.windwowHeight - 150, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 8 / 100);
+		signUp.setBounds(MainFrame.windwowWidth* 4 / 100, MainFrame.windwowHeight - 200, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 8 / 100);
 		signUp.setFont(arialBoldFont);
 		
 		welcome.setFont(arialBoldFont);
@@ -78,7 +85,7 @@ public class HomePanel extends JPanel {
 		});
 		setVisiblity.setBounds(MainFrame.windwowWidth * 84 / 100 -30, 150 + MainFrame.windwowHeight * 10 / 100, MainFrame.windwowWidth * 16 / 100, MainFrame.windwowHeight * 4 / 100);
 		
-		login.setBounds(MainFrame.windwowWidth* 4 / 100,150 + MainFrame.windwowHeight * 10 / 100 + 55, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 8 / 100);
+		login.setBounds(MainFrame.windwowWidth* 4 / 100,150 + MainFrame.windwowHeight * 10 / 100 + 45, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 8 / 100);
 		login.setFont(arialBoldFont);
 		login.addActionListener(null);
 		
@@ -88,6 +95,21 @@ public class HomePanel extends JPanel {
 		passwordInput.setBounds(MainFrame.windwowWidth* 4 / 100, 150+5 - MainFrame.windwowHeight * 5 / 100 + MainFrame.windwowHeight * 10 / 100, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 4 / 100);
 		passwordInput.setFont(IDFont);
 		
+		findingLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 250 + MainFrame.windwowHeight * 10 / 100 + 17, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 8 / 100);
+		findingLabel.setFont(IDFont);
+		
+		findIDAndPasswordPanel.setBounds(MainFrame.windwowWidth* 4 / 100, 300 + MainFrame.windwowHeight * 10 / 100 , MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 8 / 100);
+		findIDAndPasswordPanel.setLayout(new GridLayout());
+		findingID.setAlignmentX(CENTER_ALIGNMENT);
+		findingPassword.setAlignmentX(CENTER_ALIGNMENT);
+		findIDAndPasswordPanel.add(findingID);
+		findIDAndPasswordPanel.add(findingPassword);
+		
+		newToHere.setBounds(MainFrame.windwowWidth* 4 / 100, 350 + MainFrame.windwowHeight * 10 / 100 , MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 8 / 100);
+		newToHere.setFont(IDFont);
+		
+		this.add(newToHere);
+		this.add(findingLabel);
 		this.add(setVisiblity);
 		this.add(passwordField);
 		this.add(IDInput);
@@ -96,14 +118,27 @@ public class HomePanel extends JPanel {
 		this.add(signUp);
 		this.add(login);
 		this.add(passwordInput);
+		this.add(findIDAndPasswordPanel);
 	}
 	
-	public JButton getSignUpButton() {
+	public RoundButton getSignUpButton() {
 		return signUp;
+	}
+	
+	public RoundButton getLoginButton() {
+		return login;
 	}
 	
 	public TextField getIDField() {
 		return idField;
 	}
 	
+	class LoginProcedure implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
 }

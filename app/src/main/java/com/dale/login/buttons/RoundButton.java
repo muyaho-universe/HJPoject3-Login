@@ -18,6 +18,12 @@ public class RoundButton extends JButton {
 	      this.color = color;
 	   }
 	   
+	   public RoundButton(String string,Color color, boolean hasBorderLine) {
+		      super(string);
+		      
+		      this.color = color;
+		   }
+	   
 	   public void setColor(String string,Color color) {
 		     this.setText(string);
 		      decorate();
