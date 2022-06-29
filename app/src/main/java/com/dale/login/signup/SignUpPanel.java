@@ -22,6 +22,7 @@ import javax.swing.text.MaskFormatter;
 
 import com.dale.login.MainFrame;
 import com.dale.login.buttons.RoundButton;
+import com.dale.login.sql.*;
 
 public class SignUpPanel extends JPanel {
 	static JLabel label = new JLabel("Sign up");
@@ -51,6 +52,10 @@ public class SignUpPanel extends JPanel {
 	private String[] months;
 	private String[] days;
 	private String gender = null;
+	private String year;
+	private String month;
+	private String day;
+	private String birthday;
 	
 	private JToggleButton male;
 	private JToggleButton female;
@@ -67,7 +72,7 @@ public class SignUpPanel extends JPanel {
 	private JCheckBox agree;
 	
 	private boolean isIDLongEnough;
-	private boolean isIDConfirmed;
+	private boolean isIDConfirmed = false;
 	private boolean doesPasswordHaveNumber = false;
 	private boolean doesPasswordHaveCapitol = false;
 	private boolean doesPasswordHaveLower = false;
@@ -122,17 +127,36 @@ public class SignUpPanel extends JPanel {
 					isIDLongEnough = true;
 					idFieldcheck.setText("Long enough");
 					idFieldcheck.setForeground(Color.BLACK);
+					
 				}
 				else {
 					idFieldcheck.setText("Too short! 4 or more!");
 					isIDLongEnough =false;
+					idFieldcheck.setForeground(Color.RED);
 				}
 			}
 		});
 		
 		idConfirmButton = new RoundButton("Confirm");
 		idConfirmButton.setBounds(MainFrame.windwowWidth * 88 / 100-50, 120, 50, MainFrame.windwowHeight * 5 / 100);
-		idConfirmButton.addActionListener(new )
+		idConfirmButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(isIDLongEnough) {
+					if(SQLHandler.isIDExisted(idField.getText())) {
+						idFieldcheck.setText("ID existed! Try other one!");
+						idFieldcheck.setForeground(Color.RED);
+						isIDConfirmed = false;
+					}
+					else {
+						idFieldcheck.setText("You're good to GO!");
+						idFieldcheck.setForeground(new Color(61,205,91));
+						isIDConfirmed = true;
+					}
+				}
+			}
+			
+		});
 		
 		
 		passwordFieldLabel.setFont(IDFont);
@@ -335,8 +359,20 @@ public class SignUpPanel extends JPanel {
 		for(int i = 0; i < 31; i ++) {
 			days[i] = i+1+"";
 		}
+		year = "1950";
+		month = "1";
+		day = "1";
+		birthday = year + "-" + month + "-" + day;
 		yearComboBox = new JComboBox(years);
 		yearComboBox.setFont(IDFont);
+		yearComboBox.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED)
+                	year = (String) e.getItem();
+                System.out.println(year);
+            }
+        });
 		monthComboBox = new JComboBox(months);
 		monthComboBox.setFont(IDFont);
 		dayComboBox = new JComboBox(days);
@@ -369,10 +405,14 @@ public class SignUpPanel extends JPanel {
 		signUp.setFont(arialBoldFont);
 		signUp.setBounds(MainFrame.windwowWidth * 4 / 100, 550,  MainFrame.windwowWidth * 88/ 100, MainFrame.windwowHeight * 8 / 100);
 		signUp.addActionListener(new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				isNameFilled = nameField.getText().isEmpty();
+				if(isIDConfirmed && doesPasswordHaveNumber && doesPasswordHaveCapitol && doesPasswordHaveLower 
+						&&isPasswordLongEnough && isPasswordSame &&isNameFilled) {
+					
+				}
 				
 			}
 			
@@ -407,5 +447,21 @@ public class SignUpPanel extends JPanel {
 	
 	public RoundButton getGoToBackButton() {
 		return goToBack;
+	}
+	
+	public TextField getIDField() {
+		return idField;
+	}
+	
+	public JPasswordField getPasswordField() {
+		return passwordField;
+	}
+		
+	public TextField getNameField() {
+		return nameField;
+	}
+
+	public String getGender() {
+		return gender;
 	}
 }

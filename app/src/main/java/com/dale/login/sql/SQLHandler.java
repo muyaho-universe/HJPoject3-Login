@@ -40,7 +40,7 @@ public class SQLHandler {
             statement = connection.createStatement();
             
             System.out.println("연결 성공");
-            String sql = "SELECT user_id FROM users where user_id = " + id;
+            String sql = "SELECT user_id FROM users where user_id = \'" + id + "\'";
             
             // 5. 쿼리 수행
             // 레코드들은 ResultSet 객체에 추가된다.
