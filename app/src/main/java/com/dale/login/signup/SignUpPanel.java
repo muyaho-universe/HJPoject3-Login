@@ -2,14 +2,23 @@ package com.dale.login.signup;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.ParseException;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.text.MaskFormatter;
 
 import com.dale.login.MainFrame;
 import com.dale.login.buttons.RoundButton;
@@ -19,18 +28,20 @@ public class SignUpPanel extends JPanel {
 	private static JLabel idFieldLabel = new JLabel("Enter the ID:");
 	private static JLabel passwordFieldLabel = new JLabel("Enter the password: ");
 	private static JLabel passwordConfirmFieldLabel = new JLabel("Re-enter the password:");
+	private JLabel idFieldcheck = null;
 	private JLabel passwordConfirmCheck = null;
 	private JLabel passwordCheck = null;
 	private static JLabel nameFieldLabel = new JLabel("Enter your name: ");
 	private static JLabel genderFieldLabel =  new JLabel("Select your gender: ");
-	private static JLabel phoneNumberFieldLabel = null;
-	private static JLabel birthdayFieldLabel = null;
+	private static JLabel phoneNumberFieldLabel = new JLabel("Enter your phone number: ");
+	private static JLabel birthdayFieldLabel = new JLabel("Select your birthday: ");
+	private static JLabel confirmLabel = new JLabel("I agree! ");
 	
 	private TextField idField = null;
 	private JPasswordField passwordField = null;
 	private JPasswordField passwordConfirmField = null;
 	private TextField nameField = null;
-	private TextField phoneNumberField = null; // use mask 010-0000-0000 format
+	private JFormattedTextField phoneNumberField = null; // use mask 010-0000-0000 format
 	
 	private JComboBox yearComboBox = null;
 	private JComboBox monthComboBox = null;
@@ -39,6 +50,7 @@ public class SignUpPanel extends JPanel {
 	private String[] years;
 	private String[] months;
 	private String[] days;
+	private String gender = null;
 	
 	private JToggleButton male;
 	private JToggleButton female;
@@ -50,7 +62,11 @@ public class SignUpPanel extends JPanel {
 	private RoundButton idConfirmButton;
 	private RoundButton setVisiblityOnPasswordField;
 	private RoundButton setVisiblityOnPasswordConfirmField;
+	private RoundButton signUp;
 	
+	private JCheckBox agree;
+	
+	private boolean isIDLongEnough;
 	private boolean isIDConfirmed;
 	private boolean doesPasswordHaveNumber = false;
 	private boolean doesPasswordHaveCapitol = false;
@@ -60,8 +76,13 @@ public class SignUpPanel extends JPanel {
 	private boolean isNameFilled;
 	private boolean isVisiblePasswordField = false;
 	private boolean isVisiblePasswordConfirmField = false;
+	private boolean isGenderSelected = false;
+	private boolean isAgreed = false;
 	
 	private JPanel togglePanel;
+	private JPanel birthDayComboPanel;
+	
+	private MaskFormatter formatter;
 	
 	Font arialBoldFont = new Font("Arial", Font.BOLD, 30);
 	Font arialFont = new Font("Arial", Font.CENTER_BASELINE, 20);
@@ -88,9 +109,31 @@ public class SignUpPanel extends JPanel {
 		idFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 85, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		idField = new TextField();
 		idField.setBounds(MainFrame.windwowWidth* 4 / 100, 120, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
+		idFieldcheck = new JLabel("");
+		idFieldcheck.setForeground(Color.RED);
+		idFieldcheck.setBounds(MainFrame.windwowWidth* 4 / 100, 140, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
+		idFieldcheck.setFont(smallFont);
 		idField.setFont(arialFont);
+		idField.addTextListener(new TextListener() {
+			@Override
+			public void textValueChanged(TextEvent e) {
+				// TODO Auto-generated method stub
+				if(idField.getText().length()>= 4 ) {
+					isIDLongEnough = true;
+					idFieldcheck.setText("Long enough");
+					idFieldcheck.setForeground(Color.BLACK);
+				}
+				else {
+					idFieldcheck.setText("Too short! 4 or more!");
+					isIDLongEnough =false;
+				}
+			}
+		});
+		
 		idConfirmButton = new RoundButton("Confirm");
 		idConfirmButton.setBounds(MainFrame.windwowWidth * 88 / 100-50, 120, 50, MainFrame.windwowHeight * 5 / 100);
+		idConfirmButton.addActionListener(new )
+		
 		
 		passwordFieldLabel.setFont(IDFont);
 		passwordFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 165, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
@@ -229,24 +272,118 @@ public class SignUpPanel extends JPanel {
 		genderFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 350, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		genderFieldLabel.setFont(IDFont);
 		male = new JToggleButton("Male");
+		male.setBackground(Color.WHITE);
 		male.setFont(smallFont);
 		male.setForeground(new Color(61,205,91));
+		male.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED) {
+                	isGenderSelected = true;
+                	gender = "male";
+                	System.out.println(gender);
+                }              
+            }
+        });
 		female = new JToggleButton("Female");
+		female.setBackground(Color.WHITE);
 		female.setFont(smallFont);
 		female.setForeground(new Color(61,205,91));
+		female.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED) {
+                	isGenderSelected = true;
+                	gender = "female";
+                	System.out.println(gender);
+                }              
+            }
+        });
 		buttonGroup = new ButtonGroup();
 		container = new Container();
 		buttonGroup.add(male);
 		buttonGroup.add(female);
+		
 		container.add(male);
 		container.add(female);
-		container.setBounds(MainFrame.windwowWidth* 4 / 100, 365, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		container.setBounds(MainFrame.windwowWidth* 4 / 100, 375, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		container.setLayout(new FlowLayout());
+		
+		phoneNumberFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 395, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		phoneNumberFieldLabel.setFont(IDFont);
+		try {
+			formatter = new MaskFormatter("010-####-####");
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		phoneNumberField = new JFormattedTextField();
+		formatter.install(phoneNumberField);
+		phoneNumberField.setBounds(MainFrame.windwowWidth* 4 / 100, 420, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		
+		birthdayFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 455, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		birthdayFieldLabel.setFont(IDFont);
+		years = new String[73];
+		for(int i = 0; i < 73; i ++) {
+			years[i] = i+1950+"";
+		}
+		months = new String[12];
+		for(int i = 0; i < 12; i ++) {
+			months[i] = i+1+"";
+		}
+		days = new String[31];
+		for(int i = 0; i < 31; i ++) {
+			days[i] = i+1+"";
+		}
+		yearComboBox = new JComboBox(years);
+		yearComboBox.setFont(IDFont);
+		monthComboBox = new JComboBox(months);
+		monthComboBox.setFont(IDFont);
+		dayComboBox = new JComboBox(days);
+		dayComboBox.setFont(IDFont);
+		birthDayComboPanel = new JPanel();
+		birthDayComboPanel.setLayout(new FlowLayout());
+		birthDayComboPanel.setBounds(MainFrame.windwowWidth* 4 / 100, 480, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		birthDayComboPanel.add(yearComboBox);
+		birthDayComboPanel.add(monthComboBox);
+		birthDayComboPanel.add(dayComboBox);
+		birthDayComboPanel.setBackground(Color.WHITE);
+		
+		confirmLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 510, MainFrame.windwowWidth * 44 / 100, MainFrame.windwowHeight * 5 / 100);
+		confirmLabel.setBackground(Color.WHITE);
+		confirmLabel.setFont(IDFont);
+		agree = new JCheckBox();
+		agree.setBounds(MainFrame.windwowWidth * 64 / 100, 515,  MainFrame.windwowHeight * 3/ 100, MainFrame.windwowHeight * 3 / 100);
+		agree.setBackground(Color.WHITE);
+		agree.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED)
+                	isAgreed = true;
+                else
+                	isAgreed = false;
+            }
+        });
+		
+		signUp = new RoundButton("Make an Account!");
+		signUp.setFont(arialBoldFont);
+		signUp.setBounds(MainFrame.windwowWidth * 4 / 100, 550,  MainFrame.windwowWidth * 88/ 100, MainFrame.windwowHeight * 8 / 100);
+		signUp.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		
 		this.add(goToBack);
 		this.add(label);
 		this.add(idFieldLabel);
 		this.add(idField);
 		this.add(idConfirmButton);
+		this.add(idFieldcheck);
 		this.add(passwordFieldLabel);
 		this.add(passwordField);
 		this.add(setVisiblityOnPasswordField);
@@ -259,6 +396,13 @@ public class SignUpPanel extends JPanel {
 		this.add(nameField);
 		this.add(genderFieldLabel);
 		this.add(container);
+		this.add(phoneNumberFieldLabel);
+		this.add(phoneNumberField);
+		this.add(birthdayFieldLabel);
+		this.add(birthDayComboPanel);
+		this.add(confirmLabel);
+		this.add(agree);
+		this.add(signUp);
 	}
 	
 	public RoundButton getGoToBackButton() {
