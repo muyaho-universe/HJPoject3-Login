@@ -13,6 +13,7 @@ import com.dale.login.buttons.RoundButton;
 
 public class HomePanel extends JPanel {
 	private RoundButton signUp;
+	private RoundButton login;
 	private TextField idField;
 	private JPasswordField passwordField;
 	private JLabel welcome;
@@ -38,10 +39,13 @@ public class HomePanel extends JPanel {
 		welcome = new JLabel("Welcome!");
 		idField = new TextField();
 		passwordField = new JPasswordField();
+		login = new RoundButton("Login");
 		signUp = new RoundButton("Sign up");
 		IDInput = new JLabel("Enter your ID: ");
 		passwordInput = new JLabel("Enter your password: ");
 		setVisiblity = new RoundButton("Hide");
+		
+		
 		
 		signUp.setBounds(MainFrame.windwowWidth* 4 / 100, MainFrame.windwowHeight - 150, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 8 / 100);
 		signUp.setFont(arialBoldFont);
@@ -74,6 +78,10 @@ public class HomePanel extends JPanel {
 		});
 		setVisiblity.setBounds(MainFrame.windwowWidth * 84 / 100 -30, 150 + MainFrame.windwowHeight * 10 / 100, MainFrame.windwowWidth * 16 / 100, MainFrame.windwowHeight * 4 / 100);
 		
+		login.setBounds(MainFrame.windwowWidth* 4 / 100,150 + MainFrame.windwowHeight * 10 / 100 + 55, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 8 / 100);
+		login.setFont(arialBoldFont);
+		login.addActionListener(null);
+		
 		IDInput.setBounds(MainFrame.windwowWidth* 4 / 100, 150+5 - MainFrame.windwowHeight * 5 / 100, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 4 / 100);
 		IDInput.setFont(IDFont);
 		
@@ -86,6 +94,7 @@ public class HomePanel extends JPanel {
 		this.add(welcome);
 		this.add(idField);
 		this.add(signUp);
+		this.add(login);
 		this.add(passwordInput);
 	}
 	
