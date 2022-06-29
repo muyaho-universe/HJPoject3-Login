@@ -61,6 +61,8 @@ public class SignUpPanel extends JPanel {
 	private boolean isVisiblePasswordField = false;
 	private boolean isVisiblePasswordConfirmField = false;
 	
+	private JPanel togglePanel;
+	
 	Font arialBoldFont = new Font("Arial", Font.BOLD, 30);
 	Font arialFont = new Font("Arial", Font.CENTER_BASELINE, 20);
 	Font IDFont = new Font("Arial", Font.CENTER_BASELINE, 15);
@@ -74,7 +76,7 @@ public class SignUpPanel extends JPanel {
 	}
 	
 	private void createSignUpPanel() {
-		goToBack = new RoundButton("<-", new Color(230, 230, 230));
+		goToBack = new RoundButton("ก็", new Color(230, 230, 230));
 		goToBack.setBounds(5,5, 43, 20);
 		
 		label.setFont(arialBoldFont);
@@ -135,6 +137,12 @@ public class SignUpPanel extends JPanel {
 						doesPasswordHaveLower = false;
 						passwordCheck.setForeground(Color.RED);
 					}
+				}
+				else {
+					doesPasswordHaveNumber = false;
+					doesPasswordHaveCapitol = false;
+					doesPasswordHaveLower = false;
+					passwordCheck.setForeground(Color.RED);
 				}
 			}
 			
@@ -217,9 +225,22 @@ public class SignUpPanel extends JPanel {
 		nameField.setBounds(MainFrame.windwowWidth* 4 / 100, 315, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		nameField.setFont(arialFont);
 		
+		togglePanel = new JPanel();
 		genderFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 350, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		genderFieldLabel.setFont(IDFont);
-		
+		male = new JToggleButton("Male");
+		male.setFont(smallFont);
+		male.setForeground(new Color(61,205,91));
+		female = new JToggleButton("Female");
+		female.setFont(smallFont);
+		female.setForeground(new Color(61,205,91));
+		buttonGroup = new ButtonGroup();
+		container = new Container();
+		buttonGroup.add(male);
+		buttonGroup.add(female);
+		container.add(male);
+		container.add(female);
+		container.setBounds(MainFrame.windwowWidth* 4 / 100, 365, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		
 		this.add(goToBack);
 		this.add(label);
@@ -237,6 +258,7 @@ public class SignUpPanel extends JPanel {
 		this.add(nameFieldLabel);
 		this.add(nameField);
 		this.add(genderFieldLabel);
+		this.add(container);
 	}
 	
 	public RoundButton getGoToBackButton() {
