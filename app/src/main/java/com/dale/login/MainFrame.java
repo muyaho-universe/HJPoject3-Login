@@ -111,7 +111,6 @@ public class MainFrame extends JFrame {
 				label.setFont(arialBoldFont);
 				context.setFont(arialFont);
 								
-				
 				notExistedFrame.setVisible(true);
 				notExistedFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				

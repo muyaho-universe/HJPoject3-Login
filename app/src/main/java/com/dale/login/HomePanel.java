@@ -48,7 +48,7 @@ public class HomePanel extends JPanel {
 		signUp = new RoundButton("Sign up");
 		IDInput = new JLabel("Enter your ID: ");
 		passwordInput = new JLabel("Enter your password: ");
-		setVisiblity = new RoundButton("Hide");
+		setVisiblity = new RoundButton("Show");
 		findingLabel = new JLabel("Did you forget your account ? ");
 		findingID = new RoundButton("Forgot ID", Color.WHITE, false);
 		findingPassword = new RoundButton("Forgot Password", Color.WHITE, false);
@@ -74,12 +74,12 @@ public class HomePanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(isVisible) {
-					setVisiblity.setColor("Hide", new Color(61,205,91));
+					setVisiblity.setColor("Show", new Color(61,205,91));
 					passwordField.setEchoChar('*');
 					isVisible = false;
 				}
 				else {
-					setVisiblity.setColor("Show", Color.GRAY);
+					setVisiblity.setColor("Hide", Color.GRAY);
 					passwordField.setEchoChar((char)0);
 					isVisible = true;
 				}
