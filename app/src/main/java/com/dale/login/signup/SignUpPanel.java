@@ -21,8 +21,8 @@ public class SignUpPanel extends JPanel {
 	private static JLabel passwordConfirmFieldLabel = new JLabel("Re-enter the password:");
 	private JLabel passwordConfirmCheck = null;
 	private JLabel passwordCheck = null;
-	private static JLabel nameFieldLabel = null;
-	private static JLabel genderFieldLabel = null;
+	private static JLabel nameFieldLabel = new JLabel("Enter your name: ");
+	private static JLabel genderFieldLabel =  new JLabel("Select your gender: ");
 	private static JLabel phoneNumberFieldLabel = null;
 	private static JLabel birthdayFieldLabel = null;
 	
@@ -80,30 +80,30 @@ public class SignUpPanel extends JPanel {
 		label.setFont(arialBoldFont);
 		label.setForeground(new Color(61,205,91));
 		label.setHorizontalAlignment(JLabel.CENTER);
-		label.setBounds(MainFrame.windwowWidth* 4 / 100, 50, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		label.setBounds(MainFrame.windwowWidth* 4 / 100, 30, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		
 		idFieldLabel.setFont(IDFont);
-		idFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 105, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		idFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 85, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		idField = new TextField();
-		idField.setBounds(MainFrame.windwowWidth* 4 / 100, 140, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
+		idField.setBounds(MainFrame.windwowWidth* 4 / 100, 120, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
 		idField.setFont(arialFont);
 		idConfirmButton = new RoundButton("Confirm");
-		idConfirmButton.setBounds(MainFrame.windwowWidth * 88 / 100-50, 140, 50, MainFrame.windwowHeight * 5 / 100);
+		idConfirmButton.setBounds(MainFrame.windwowWidth * 88 / 100-50, 120, 50, MainFrame.windwowHeight * 5 / 100);
 		
 		passwordFieldLabel.setFont(IDFont);
-		passwordFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 185, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		passwordFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 165, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		passwordField = new JPasswordField();
-		passwordField.setBounds(MainFrame.windwowWidth* 4 / 100, 210, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
+		passwordField.setBounds(MainFrame.windwowWidth* 4 / 100, 190, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
 		passwordField.setFont(arialFont);
 		passwordField.setEchoChar('*');
 		passwordCheck = new JLabel("8 characters or More");
 		passwordCheck.setFont(smallFont);
-		passwordCheck.setBounds(MainFrame.windwowWidth* 4 / 100, 230, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		passwordCheck.setBounds(MainFrame.windwowWidth* 4 / 100, 210, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		passwordCheck.setForeground(Color.RED);
 		passwordField.addCaretListener(new CaretListener(){
 			@Override
 			public void caretUpdate(CaretEvent e) {
-				String temp =new String( passwordField.getPassword());
+				String temp =new String(passwordField.getPassword());
 				char[] charTemp = temp.toCharArray();
 				if(temp.length() >= 8) {
 					isPasswordLongEnough = true;
@@ -140,7 +140,7 @@ public class SignUpPanel extends JPanel {
 			
 		});
 		setVisiblityOnPasswordField = new RoundButton("Show");
-		setVisiblityOnPasswordField.setBounds(MainFrame.windwowWidth * 88 / 100-50, 210, 50, MainFrame.windwowHeight * 5 / 100);
+		setVisiblityOnPasswordField.setBounds(MainFrame.windwowWidth * 88 / 100-50, 190, 50, MainFrame.windwowHeight * 5 / 100);
 		setVisiblityOnPasswordField.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -158,13 +158,13 @@ public class SignUpPanel extends JPanel {
 		});
 		
 		passwordConfirmFieldLabel.setFont(IDFont);
-		passwordConfirmFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 250, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		passwordConfirmFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 230, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		passwordConfirmField = new JPasswordField();
-		passwordConfirmField.setBounds(MainFrame.windwowWidth* 4 / 100, 275, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
+		passwordConfirmField.setBounds(MainFrame.windwowWidth* 4 / 100, 255, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
 		passwordConfirmField.setFont(arialFont);
 		passwordConfirmField.setEchoChar('*');
 		setVisiblityOnPasswordConfirmField = new RoundButton("Show");
-		setVisiblityOnPasswordConfirmField.setBounds(MainFrame.windwowWidth * 88 / 100-50, 275, 50, MainFrame.windwowHeight * 5 / 100);
+		setVisiblityOnPasswordConfirmField.setBounds(MainFrame.windwowWidth * 88 / 100-50, 255, 50, MainFrame.windwowHeight * 5 / 100);
 		setVisiblityOnPasswordConfirmField.addActionListener(new ActionListener (){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -182,7 +182,7 @@ public class SignUpPanel extends JPanel {
 		});
 		passwordConfirmCheck =new JLabel("");
 		passwordConfirmCheck.setFont(smallFont);
-		passwordConfirmCheck.setBounds(MainFrame.windwowWidth* 4 / 100, 295, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		passwordConfirmCheck.setBounds(MainFrame.windwowWidth* 4 / 100, 275, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		passwordConfirmField.addCaretListener(new CaretListener(){
 			String password ;
 			String passwordConfirmed; 
@@ -211,6 +211,15 @@ public class SignUpPanel extends JPanel {
 			}
 		});
 		
+		nameFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 290, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 4 / 100);
+		nameFieldLabel.setFont(IDFont);
+		nameField = new TextField();
+		nameField.setBounds(MainFrame.windwowWidth* 4 / 100, 315, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		nameField.setFont(arialFont);
+		
+		genderFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 350, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		genderFieldLabel.setFont(IDFont);
+		
 		
 		this.add(goToBack);
 		this.add(label);
@@ -225,6 +234,9 @@ public class SignUpPanel extends JPanel {
 		this.add(passwordConfirmField);
 		this.add(setVisiblityOnPasswordConfirmField);
 		this.add(passwordConfirmCheck);
+		this.add(nameFieldLabel);
+		this.add(nameField);
+		this.add(genderFieldLabel);
 	}
 	
 	public RoundButton getGoToBackButton() {
