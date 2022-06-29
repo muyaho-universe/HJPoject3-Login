@@ -29,8 +29,10 @@ public class MainFrame extends JFrame {
 	private AdminPanel adminPanel = null;
 	private SignUpPanel signUpPanel = null;
 	private SpecialPanel special = null;
+	
 	JFrame notExistedFrame = null;
 	JFrame wrongPasswordFrame = null;
+	JFrame lackOfInformationFrame = null;
 	
 	private int whereToGo = 0;
 	
@@ -65,6 +67,9 @@ public class MainFrame extends JFrame {
 		this.homePanel.getSignUpButton().addActionListener(new ToSignUp());
 		this.homePanel.getLoginButton().addActionListener(new LoginProcedure());
 		this.signUpPanel.getSignUpButton().addActionListener(new SignUp());
+		this.signUpPanel.getGoToBackButton().addActionListener(new ToHome());
+		this.special.getToHome().addActionListener(new ToHome());
+//		this.add(special);
 		this.add(homePanel);
 		this.setSize(windwowWidth, windwowHeight);
 		this.setVisible(true);
@@ -72,15 +77,27 @@ public class MainFrame extends JFrame {
 		this.setResizable(false);
 		this.setLayout(null);
 	}
-	
-	
-	
+		
 	class ToSignUp implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
 			MainFrame.this.getContentPane().removeAll();
 			MainFrame.this.getContentPane().add(signUpPanel);
+			revalidate();
+			repaint();
+		}
+		
+	}
+	
+	class ToHome implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			MainFrame.this.getContentPane().removeAll();
+			MainFrame.this.getContentPane().add(homePanel);
 			revalidate();
 			repaint();
 		}
@@ -242,7 +259,42 @@ public class MainFrame extends JFrame {
 				repaint();
 			}
 			else{
-				System.out.println("\n¿Ãæﬂ»£~~");
+				lackOfInformationFrame = new JFrame();
+				MainFrame.this.setEnabled(false);
+				lackOfInformationFrame.setLayout(new BorderLayout());
+				lackOfInformationFrame.setSize(windwowWidth + 300, 200);
+				
+				JLabel label = new JLabel("Lack of Information");
+				JLabel context = new JLabel("You missed some information. Try again!");
+				
+				JButton ok = new JButton("I understan");
+				JPanel buttonPanel = new JPanel();
+				
+				label.setFont(arialBoldFont);
+				context.setFont(arialFont);
+								
+				
+				lackOfInformationFrame.setVisible(true);
+				lackOfInformationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				
+				buttonPanel.setSize(40, 5);
+			    buttonPanel.setLayout(new FlowLayout());
+			    buttonPanel.add(ok);
+			    
+			    ok.setSize(20, 5);
+			    ok.addActionListener(new ActionListener(){
+			    	@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						MainFrame.this.setEnabled(true);
+						lackOfInformationFrame.hide();
+					}
+			    });
+			    ok.setFont(IDFont);
+			    
+			    lackOfInformationFrame.add(label, BorderLayout.NORTH);
+			    lackOfInformationFrame.add(context, BorderLayout.CENTER);
+			    lackOfInformationFrame.add(buttonPanel, BorderLayout.SOUTH);
 			}
 			
 			

@@ -95,7 +95,7 @@ public class SQLHandler {
 			// pstmt = conn.prepareStatement(sql); 로 작성하여 데이터를 추가할 것임을 알립니다.
 			// 물론 sql 쿼리 내에서 + 연산자로 한 줄로 작성할 수 있지만 가독성이 너무 떨어지게 되므로
 			// 이 방법을 권합니다.
-			String sql = "INSERT INTO users VALUES (?,?,?,?,?,?)";
+			String sql = "INSERT INTO users(user_id, user_password, user_name, user_gender, user_phonenumber, user_birthdate) VALUES (?,?,?,?,?,?)";
 			preparedStatement = connection.prepareStatement(sql);
 
 			// 4. 데이터 binding
