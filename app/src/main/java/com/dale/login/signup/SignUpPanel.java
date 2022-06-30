@@ -450,8 +450,9 @@ public class SignUpPanel extends JPanel {
 		}
 		months = new String[12];
 		for(int i = 0; i < 12; i ++) {
-			if(i < 10) {
-				months[i] ="0"+ i+1;
+			if(i < 9) {
+				int j = i +1;
+				months[i] ="0"+ j;
 			}
 			else {
 				months[i] = i+1+"";
@@ -460,8 +461,9 @@ public class SignUpPanel extends JPanel {
 		}
 		days = new String[31];
 		for(int i = 0; i < 31; i ++) {
-			if(i < 10) {
-				days[i] ="0"+ i+1;
+			if(i < 9) {
+				int j = i +1;
+				days[i] ="0"+ j;
 			}
 			else {
 				days[i] = i+1+"";

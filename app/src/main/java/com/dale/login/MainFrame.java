@@ -65,7 +65,7 @@ public class MainFrame extends JFrame {
 	}
 	private void run() {
 		homePanel = new HomePanel();
-		adminPanel = new AdminPanel();
+		
 		signUpPanel = new SignUpPanel();
 		special = new SpecialPanel();
 		userpanel = new UserPanel();
@@ -130,7 +130,8 @@ public class MainFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			MainFrame.this.homePanel.getIDField().setText("");
+			MainFrame.this.homePanel.getPasswordField().setText("");
 			MainFrame.this.signUpPanel.getIDField().setText("");
 			MainFrame.this.signUpPanel.getPasswordField().setText("");
 			MainFrame.this.getContentPane().removeAll();
@@ -387,10 +388,15 @@ public class MainFrame extends JFrame {
 			}
 			
 			if(whereToGo == 2) {
+				
+				SQLHandler.selectAll();
 				MainFrame.this.homePanel.getIDField().setText("");
 				MainFrame.this.homePanel.getPasswordField().setText("");
 				MainFrame.this.getContentPane().removeAll();
+				adminPanel = new AdminPanel();
 				MainFrame.this.getContentPane().add(adminPanel);
+				adminPanel.drawPanel();
+				
 				revalidate();
 				repaint();
 			}
