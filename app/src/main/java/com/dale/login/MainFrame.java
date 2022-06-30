@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 
 import com.dale.login.admin.*;
 import com.dale.login.data.MyData;
+import com.dale.login.lostandfound.FindingIDPanel;
 import com.dale.login.signup.*;
 import com.dale.login.sql.SQLHandler;
 import com.dale.login.user.UserPanel;
@@ -32,7 +33,7 @@ public class MainFrame extends JFrame {
 	private SignUpPanel signUpPanel = null;
 	private SpecialPanel special = null;
 	private UserPanel userpanel = null;
-	
+	private FindingIDPanel findingIDPanel = null;
 	JFrame notExistedFrame = null;
 	JFrame wrongPasswordFrame = null;
 	JFrame lackOfInformationFrame = null;
@@ -67,14 +68,16 @@ public class MainFrame extends JFrame {
 		userpanel = new UserPanel();
 		homePanel.createPanel();
 		userpanel.createLoginAndSignout();
+		findingIDPanel = new FindingIDPanel();
 		
 		this.homePanel.getSignUpButton().addActionListener(new ToSignUp());
 		this.homePanel.getLoginButton().addActionListener(new LoginProcedure());
+		this.homePanel.getFindingID().addActionListener(new ToIDFinder());
 		this.signUpPanel.getSignUpButton().addActionListener(new SignUp());
 		this.signUpPanel.getGoToBackButton().addActionListener(new ToHome());
 		this.special.getToHome().addActionListener(new ToHome());
 		this.userpanel.getLognoutButton().addActionListener(new Logout());
-		this.userpanel.getSignoutButton().addActionListener(new );
+		this.userpanel.getSignoutButton().addActionListener(new Signout());
 		
 //		this.add(special);
 		
@@ -108,6 +111,19 @@ public class MainFrame extends JFrame {
 			MainFrame.this.signUpPanel.getPasswordField().setText(" ");
 			MainFrame.this.getContentPane().removeAll();
 			MainFrame.this.getContentPane().add(homePanel);
+			revalidate();
+			repaint();
+		}
+		
+	}
+	
+	class ToIDFinder implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			MainFrame.this.getContentPane().removeAll();
+			MainFrame.this.getContentPane().add(findingIDPanel);
 			revalidate();
 			repaint();
 		}
@@ -177,6 +193,7 @@ public class MainFrame extends JFrame {
 			yes.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					System.out.println(MyData.loadedData.get(0).getU_id());
 					SQLHandler.signOut(MyData.loadedData.get(0).getU_id());
 					MyData.loadedData.clear();
 					MainFrame.this.getContentPane().removeAll();
@@ -216,7 +233,6 @@ public class MainFrame extends JFrame {
 			System.out.println("123 "+password);
 			
 			if(whereToGo == 0) {
-				MainFrame.this.setEnabled(false);
 				notExistedFrame = new JFrame();
 				notExistedFrame.setLayout(new BorderLayout());
 				notExistedFrame.setSize(windwowWidth+ 300, 200);
@@ -232,7 +248,7 @@ public class MainFrame extends JFrame {
 				context.setFont(arialFont);
 								
 				notExistedFrame.setVisible(true);
-				notExistedFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+				notExistedFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				
 				buttonPanel.setSize(40, 5);
 			    buttonPanel.setLayout(new FlowLayout());
@@ -243,7 +259,7 @@ public class MainFrame extends JFrame {
 			    signUp.addActionListener(new ActionListener(){
 			    	@Override
 					public void actionPerformed(ActionEvent e) {
-			    		notExistedFrame.hide();
+			    		notExistedFrame.dispose();
 			    		MainFrame.this.setEnabled(true);
 						MainFrame.this.getContentPane().removeAll();
 						MainFrame.this.getContentPane().add(signUpPanel);
@@ -258,7 +274,7 @@ public class MainFrame extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
 						MainFrame.this.setEnabled(true);
-						notExistedFrame.hide();
+						notExistedFrame.dispose();
 					}
 			    });
 			    cancel.setFont(IDFont);
@@ -299,8 +315,8 @@ public class MainFrame extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 			    		wrongPasswordFrame.dispose();
 			    		MainFrame.this.setEnabled(true);
-//						MainFrame.this.getContentPane().removeAll();
-//						MainFrame.this.getContentPane().add(signUpPanel);
+						MainFrame.this.getContentPane().removeAll();
+						MainFrame.this.getContentPane().add(signUpPanel);
 						revalidate();
 						repaint();
 					}
@@ -394,7 +410,7 @@ public class MainFrame extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
 						MainFrame.this.setEnabled(true);
-						lackOfInformationFrame.hide();
+						lackOfInformationFrame.dispose();
 					}
 			    });
 			    ok.setFont(IDFont);

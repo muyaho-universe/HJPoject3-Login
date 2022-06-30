@@ -332,14 +332,14 @@ public class SQLHandler {
             statement = connection.createStatement();
             
             System.out.println("연결 성공");
-            String sql = "DELETE from users where userid = '"+id+"';";  
+            String sql = "DELETE from users where user_id = '"+id+"';";  
             
             // 5. 쿼리 수행
             // 레코드들은 ResultSet 객체에 추가된다.
-            resultSet = statement.executeQuery(sql);
+           statement.executeUpdate(sql);
             
          // 6. 실행결과 출력하기
-            isExisted = resultSet.next();
+//            isExisted = resultSet.next();
             
 //            while (resultSet.next()) {
 //               // 레코드의 칼럼은 배열과 달리 0부터 시작하지 않고 1부터 시작한다.
