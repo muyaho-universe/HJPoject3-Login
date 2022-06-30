@@ -141,6 +141,10 @@ public class HomePanel extends JPanel {
 	public RoundButton getFindingID() {
 		return findingID;
 	}
+	
+	public RoundButton getFindingPassword() {
+		return findingPassword;
+	}
 
 	public void setFindingID(RoundButton findingID) {
 		this.findingID = findingID;

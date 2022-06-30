@@ -14,6 +14,7 @@ import com.dale.login.admin.*;
 import com.dale.login.buttons.RoundButton;
 import com.dale.login.data.MyData;
 import com.dale.login.lostandfound.FindingIDPanel;
+import com.dale.login.lostandfound.FindingPasswordPane;
 import com.dale.login.signup.*;
 import com.dale.login.sql.SQLHandler;
 import com.dale.login.user.UserPanel;
@@ -35,6 +36,7 @@ public class MainFrame extends JFrame {
 	private SpecialPanel special = null;
 	private UserPanel userpanel = null;
 	private FindingIDPanel findingIDPanel = null;
+	private FindingPasswordPane findingPasswordPane = null;
 	JFrame notExistedFrame = null;
 	JFrame wrongPasswordFrame = null;
 	JFrame lackOfInformationFrame = null;
@@ -70,10 +72,12 @@ public class MainFrame extends JFrame {
 		homePanel.createPanel();
 		userpanel.createLoginAndSignout();
 		findingIDPanel = new FindingIDPanel();
+		findingPasswordPane = new FindingPasswordPane();
 		
 		this.homePanel.getSignUpButton().addActionListener(new ToSignUp());
 		this.homePanel.getLoginButton().addActionListener(new LoginProcedure());
 		this.homePanel.getFindingID().addActionListener(new ToIDFinder());
+		this.homePanel.getFindingPassword().addActionListener(new ToPWFinder());
 		this.signUpPanel.getSignUpButton().addActionListener(new SignUp());
 		this.signUpPanel.getGoToBackButton().addActionListener(new ToHome());
 		this.special.getToHome().addActionListener(new ToHome());
@@ -81,6 +85,8 @@ public class MainFrame extends JFrame {
 		this.userpanel.getSignoutButton().addActionListener(new Signout());
 		this.findingIDPanel.getCancelButton().addActionListener(new FromFinderToHome());
 		this.findingIDPanel.getFindButton().addActionListener(new IDFinding());
+		this.findingPasswordPane.getFind().addActionListener(new PWFinding());
+		this.findingPasswordPane.getCancel().addActionListener(new FromFinderToHome());
 		
 //		this.add(special);
 		
@@ -100,6 +106,20 @@ public class MainFrame extends JFrame {
 			MainFrame.this.homePanel.getPasswordField().setText(" ");
 			MainFrame.this.getContentPane().removeAll();
 			MainFrame.this.getContentPane().add(signUpPanel);
+			revalidate();
+			repaint();
+		}
+		
+	}
+	
+	class ToPWFinder implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			MainFrame.this.homePanel.getIDField().setText("");
+			MainFrame.this.homePanel.getPasswordField().setText("");
+			MainFrame.this.getContentPane().removeAll();
+			MainFrame.this.getContentPane().add(findingPasswordPane);
 			revalidate();
 			repaint();
 		}
@@ -328,13 +348,14 @@ public class MainFrame extends JFrame {
 			    buttonPanel.add(cancel);
 			    toPasswordFinder.setSize(20, 5);
 			    toPasswordFinder.setFont(IDFont);
-			    toPasswordFinder.addActionListener(new ActionListener(){
+			    toPasswordFinder.addActionListener(new ActionListener() {
 			    	@Override
 					public void actionPerformed(ActionEvent e) {
 			    		wrongPasswordFrame.dispose();
-			    		MainFrame.this.setEnabled(true);
+						MainFrame.this.homePanel.getIDField().setText("");
+						MainFrame.this.homePanel.getPasswordField().setText("");
 						MainFrame.this.getContentPane().removeAll();
-						MainFrame.this.getContentPane().add(signUpPanel);
+						MainFrame.this.getContentPane().add(findingPasswordPane);
 						revalidate();
 						repaint();
 					}
@@ -356,7 +377,7 @@ public class MainFrame extends JFrame {
 			    wrongPasswordFrame.add(buttonPanel, BorderLayout.SOUTH);
 			}
 			if(whereToGo == 1) {
-				MainFrame.this.homePanel.getIDField().setText(" ");
+				MainFrame.this.homePanel.getIDField().setText("");
 				MainFrame.this.homePanel.getPasswordField().setText("");
 				MainFrame.this.getContentPane().removeAll();
 				userpanel.createPanel();
@@ -366,7 +387,7 @@ public class MainFrame extends JFrame {
 			}
 			
 			if(whereToGo == 2) {
-				MainFrame.this.homePanel.getIDField().setText(" ");
+				MainFrame.this.homePanel.getIDField().setText("");
 				MainFrame.this.homePanel.getPasswordField().setText("");
 				MainFrame.this.getContentPane().removeAll();
 				MainFrame.this.getContentPane().add(adminPanel);
@@ -477,6 +498,7 @@ public class MainFrame extends JFrame {
 				JLabel message = new JLabel("ID Found! It's ");
 				JLabel message2 = new JLabel(foundId);
 				message2.setForeground(new Color(61,205,91));
+				message2.setFont(arialBoldFont);
 				JLabel message3 = new JLabel("!");
 				
 				messagePanel.setFont(arialBoldFont);
@@ -507,11 +529,13 @@ public class MainFrame extends JFrame {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						existed.dispose();
 						MainFrame.this.findingIDPanel.getNameField().setText("");
 						MainFrame.this.findingIDPanel.getPhoneField().setText("");
 						MainFrame.this.homePanel.getIDField().setText(foundId);
+						MainFrame.this.findingPasswordPane.getIdField().setText(foundId);
 						MainFrame.this.getContentPane().removeAll();
-//						MainFrame.this.getContentPane().add(homePanel);
+						MainFrame.this.getContentPane().add(findingPasswordPane);
 						revalidate();
 						repaint();
 						
@@ -525,5 +549,75 @@ public class MainFrame extends JFrame {
 		}
 		
 	}
-	
+	class PWFinding implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String foundPassword = SQLHandler.findPassword(findingPasswordPane.getIdField().getText(),findingPasswordPane.getNameField().getText(), findingPasswordPane.getPhoneField().getText());
+		
+			if(foundPassword.equals("null")) {
+				JFrame notExisted = new JFrame();
+				notExisted.setSize(300, 200);
+				notExisted.setLayout(new BorderLayout());
+				
+				JLabel message = new JLabel("Cannot find Password :( ");
+				message.setFont(arialBoldFont);
+				
+				RoundButton ok = new RoundButton("OK");
+				ok.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						notExisted.dispose();							
+					}
+					
+				});
+				notExisted.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				notExisted.add(ok,BorderLayout.SOUTH);
+				notExisted.add(message, BorderLayout.CENTER);
+				notExisted.setVisible(true);
+			}
+			else {
+				JFrame existed = new JFrame();
+				existed.setSize(300, 200);
+				existed.setLayout(new BorderLayout());
+				existed.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				existed.setVisible(true);
+				JPanel messagePanel = new JPanel();
+				messagePanel.setLayout(new FlowLayout());
+				
+				JLabel message = new JLabel("Password Found! It's ");
+				JLabel message2 = new JLabel(foundPassword);
+				message2.setForeground(new Color(61,205,91));
+				message2.setFont(arialBoldFont);
+				JLabel message3 = new JLabel("!");
+				
+				messagePanel.setFont(arialBoldFont);
+				messagePanel.add(message);
+				messagePanel.add(message2);
+				messagePanel.add(message3);
+				existed.add(messagePanel, BorderLayout.CENTER);
+				
+				JPanel buttonPanel = new JPanel();
+				buttonPanel.setLayout(new FlowLayout());
+				RoundButton toLogin = new RoundButton("To Login");
+				toLogin.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						existed.dispose();
+						MainFrame.this.findingPasswordPane.getNameField().setText("");
+						MainFrame.this.findingPasswordPane.getPhoneField().setText("");
+						MainFrame.this.homePanel.getPasswordField().setText(foundPassword);
+						MainFrame.this.getContentPane().removeAll();
+						MainFrame.this.getContentPane().add(homePanel);
+						revalidate();
+						repaint();
+					}
+					
+				});
+				
+				buttonPanel.add(toLogin);
+				existed.add(buttonPanel, BorderLayout.SOUTH);
+			}
+		}
+		
+	}
 }
