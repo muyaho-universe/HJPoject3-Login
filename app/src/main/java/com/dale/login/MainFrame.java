@@ -136,7 +136,7 @@ public class MainFrame extends JFrame {
 				context.setFont(arialFont);
 								
 				notExistedFrame.setVisible(true);
-				notExistedFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				notExistedFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 				
 				buttonPanel.setSize(40, 5);
 			    buttonPanel.setLayout(new FlowLayout());
@@ -281,7 +281,7 @@ public class MainFrame extends JFrame {
 								
 				
 				lackOfInformationFrame.setVisible(true);
-				lackOfInformationFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				lackOfInformationFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 				
 				buttonPanel.setSize(40, 5);
 			    buttonPanel.setLayout(new FlowLayout());
