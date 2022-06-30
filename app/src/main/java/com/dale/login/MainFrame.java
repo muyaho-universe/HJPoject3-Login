@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import com.dale.login.admin.*;
+import com.dale.login.buttons.RoundButton;
 import com.dale.login.data.MyData;
 import com.dale.login.lostandfound.FindingIDPanel;
 import com.dale.login.signup.*;
@@ -78,6 +79,8 @@ public class MainFrame extends JFrame {
 		this.special.getToHome().addActionListener(new ToHome());
 		this.userpanel.getLognoutButton().addActionListener(new Logout());
 		this.userpanel.getSignoutButton().addActionListener(new Signout());
+		this.findingIDPanel.getCancelButton().addActionListener(new FromFinderToHome());
+		this.findingIDPanel.getFindButton().addActionListener(new IDFinding());
 		
 //		this.add(special);
 		
@@ -107,8 +110,23 @@ public class MainFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			MainFrame.this.signUpPanel.getIDField().setText(" ");
-			MainFrame.this.signUpPanel.getPasswordField().setText(" ");
+			
+			MainFrame.this.signUpPanel.getIDField().setText("");
+			MainFrame.this.signUpPanel.getPasswordField().setText("");
+			MainFrame.this.getContentPane().removeAll();
+			MainFrame.this.getContentPane().add(homePanel);
+			revalidate();
+			repaint();
+		}
+		
+	}
+	
+	class FromFinderToHome implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			MainFrame.this.findingIDPanel.getNameField().setText("");
+			MainFrame.this.findingIDPanel.getPhoneField().setText("");
 			MainFrame.this.getContentPane().removeAll();
 			MainFrame.this.getContentPane().add(homePanel);
 			revalidate();
@@ -418,6 +436,91 @@ public class MainFrame extends JFrame {
 			    lackOfInformationFrame.add(label, BorderLayout.NORTH);
 			    lackOfInformationFrame.add(context, BorderLayout.CENTER);
 			    lackOfInformationFrame.add(buttonPanel, BorderLayout.SOUTH);
+			}
+		}
+	}
+	class IDFinding implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String foundId = SQLHandler.findID(findingIDPanel.getNameField().getText(), findingIDPanel.getPhoneField().getText());
+		
+			if(foundId.equals("null")) {
+				JFrame notExisted = new JFrame();
+				notExisted.setSize(300, 200);
+				notExisted.setLayout(new BorderLayout());
+				
+				JLabel message = new JLabel("Cannot find ID :( ");
+				message.setFont(arialBoldFont);
+				
+				RoundButton ok = new RoundButton("OK");
+				ok.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						notExisted.dispose();							
+					}
+					
+				});
+				notExisted.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				notExisted.add(ok,BorderLayout.SOUTH);
+				notExisted.add(message, BorderLayout.CENTER);
+				notExisted.setVisible(true);
+			}
+			else {
+				JFrame existed = new JFrame();
+				existed.setSize(300, 200);
+				existed.setLayout(new BorderLayout());
+				existed.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				existed.setVisible(true);
+				JPanel messagePanel = new JPanel();
+				messagePanel.setLayout(new FlowLayout());
+				
+				JLabel message = new JLabel("ID Found! It's ");
+				JLabel message2 = new JLabel(foundId);
+				message2.setForeground(new Color(61,205,91));
+				JLabel message3 = new JLabel("!");
+				
+				messagePanel.setFont(arialBoldFont);
+				messagePanel.add(message);
+				messagePanel.add(message2);
+				messagePanel.add(message3);
+				existed.add(messagePanel, BorderLayout.CENTER);
+				
+				JPanel buttonPanel = new JPanel();
+				buttonPanel.setLayout(new FlowLayout());
+				RoundButton toLogin = new RoundButton("To Login");
+				toLogin.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						existed.dispose();
+						MainFrame.this.findingIDPanel.getNameField().setText("");
+						MainFrame.this.findingIDPanel.getPhoneField().setText("");
+						MainFrame.this.homePanel.getIDField().setText(foundId);
+						MainFrame.this.getContentPane().removeAll();
+						MainFrame.this.getContentPane().add(homePanel);
+						revalidate();
+						repaint();
+					}
+					
+				});
+				RoundButton toPasswordFinder = new RoundButton("To Password Finder", Color.WHITE);
+				toPasswordFinder.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						MainFrame.this.findingIDPanel.getNameField().setText("");
+						MainFrame.this.findingIDPanel.getPhoneField().setText("");
+						MainFrame.this.homePanel.getIDField().setText(foundId);
+						MainFrame.this.getContentPane().removeAll();
+//						MainFrame.this.getContentPane().add(homePanel);
+						revalidate();
+						repaint();
+						
+					}
+					
+				});
+				buttonPanel.add(toPasswordFinder);
+				buttonPanel.add(toLogin);
+				existed.add(buttonPanel, BorderLayout.SOUTH);
 			}
 		}
 		

@@ -223,7 +223,12 @@ public class SignUpPanel extends JPanel {
 		idConfirmButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(isIDLongEnough) {
+				if(idField.getText().equals("null") || idField.getText().equals("admin")) {
+					idFieldcheck.setText("You can't use this one! Try other one!");
+					idFieldcheck.setForeground(Color.RED);
+					isIDConfirmed = false;
+				}
+				else if(isIDLongEnough) {
 					if(SQLHandler.isIDExisted(idField.getText())) {
 						idFieldcheck.setText("ID existed! Try other one!");
 						idFieldcheck.setForeground(Color.RED);
