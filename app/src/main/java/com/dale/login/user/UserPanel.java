@@ -2,15 +2,20 @@ package com.dale.login.user;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.text.ParseException;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.text.MaskFormatter;
 
 import com.dale.login.MainFrame;
 import com.dale.login.buttons.RoundButton;
@@ -31,14 +36,31 @@ public class UserPanel extends JPanel {
 	private static JLabel birthdayFieldLabel = new JLabel("Your birthday: ");
 	private JLabel passwordConfirmCheck = null;
 	private JLabel passwordCheck = null;
+	private JToggleButton male;
+	private JToggleButton female;
+	
+	private ButtonGroup buttonGroup;
+	private Container container;
+	
 	
 	private TextField idField;
 	private JPasswordField passwordField;
+	private TextField nameField;
+	private JPanel togglePanel;
+	private JFormattedTextField phoneNumberField;
+	private JFormattedTextField birthdayField;
 	
 	private RoundButton setVisiblityOnPasswordField;
 	private RoundButton editPasswordButton;
 	private RoundButton passwordEditGoButton;
 	private RoundButton passwordEditCancelButton;
+	private RoundButton nameEditButton;
+	private RoundButton genderEditButton;
+	private RoundButton phoneNumberEditButton;
+	private RoundButton birthdayEditButton;
+	private RoundButton saveButton;
+	private RoundButton logoutButton;
+	private RoundButton signoutButton;
 	
 	private boolean isVisiblePasswordField = false;
 	private boolean doesPasswordHaveNumber = false;
@@ -46,10 +68,17 @@ public class UserPanel extends JPanel {
 	private boolean doesPasswordHaveLower = false;
 	private boolean isPasswordLongEnough = false;
 	private boolean isPasswordSame = false;
+	private boolean isPasswordChanged = false;
+	private boolean isNameEdittedButtonPressed = false;
+	private boolean isNameEditted = false;
+	private boolean isGenderEdittedButtonPressed = false;
+	private boolean isPhoneNumberEdittedButtonPressed = false;
+	private boolean isBirthdayEdittedButtonPressed = false;
+	private boolean isGenderChanged = false;
 	
 	private String enteredCurrentPassword = null;
 	private String changedPassword = null;
-	
+	private String gender;
 	
 	
 	private JFrame passwordEditFrame;
@@ -59,6 +88,9 @@ public class UserPanel extends JPanel {
 	private boolean isVisibleChangePasswordField =false;
 	private RoundButton setVisiblityOnChangeConfirmPasswordField ;
 	private boolean isVisibleChangeConfirmPasswordField =false;
+	
+	private MaskFormatter formatter;
+	private MaskFormatter dateFormatter;
 	
 	public UserPanel() {
 		this.setLayout(null);
@@ -114,7 +146,7 @@ public class UserPanel extends JPanel {
 				passwordEditFrame = new JFrame();
 				passwordEditFrame.setSize(MainFrame.windwowWidth+ 300, 350);
 				passwordEditFrame.setVisible(true);
-				passwordEditFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+				passwordEditFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				UserPanel.this.setEnabled(false);
 				
 				passwordEditFrame.setLayout(null);
@@ -332,6 +364,7 @@ public class UserPanel extends JPanel {
 									passwordEditSuccess.dispose();
 									passwordEditFrame.dispose();
 									UserPanel.this.passwordField.setText(temp);
+									isPasswordChanged = true;
 								}
 								
 							});
@@ -340,6 +373,7 @@ public class UserPanel extends JPanel {
 							passwordEditSuccess.setLayout(new BorderLayout());
 							passwordEditSuccess.add(gooodGood, BorderLayout.CENTER);
 							passwordEditSuccess.add(nice,BorderLayout.SOUTH );
+							passwordEditSuccess.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 						}
 						else {
 							JFrame passwordEditFail = new JFrame();
@@ -359,6 +393,7 @@ public class UserPanel extends JPanel {
 							passwordEditFail.setLayout(new BorderLayout());
 							passwordEditFail.add(noGood, BorderLayout.CENTER);
 							passwordEditFail.add(again,BorderLayout.SOUTH );
+							passwordEditFail.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 						}
 					}
 					
@@ -393,6 +428,169 @@ public class UserPanel extends JPanel {
 			
 		});
 		
+		nameFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 225, MainFrame.windwowWidth * 88 / 100- 120, MainFrame.windwowHeight * 4 / 100);
+		nameFieldLabel.setFont(IDFont);
+		String tempName = MyData.loadedData.get(0).getName().trim();
+		nameField = new TextField(tempName);
+		nameField.setFont(arialFont);
+		nameField.setBounds(MainFrame.windwowWidth* 4 / 100, 255, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
+		nameField.setEnabled(false);
+		nameEditButton= new RoundButton("Edit");
+		nameEditButton.setBounds(MainFrame.windwowWidth * 88 / 100-40, 255, 50, MainFrame.windwowHeight * 5 / 100);
+		nameEditButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(isNameEdittedButtonPressed) {
+					if(!nameField.getText().isBlank()) {
+						isNameEditted= true;
+						nameField.setEnabled(false);
+						nameEditButton.setColor("Edit", new Color(61,205,91));
+						isNameEdittedButtonPressed= false;
+					}
+					
+				}
+				else {
+					nameEditButton.setColor("Save", Color.YELLOW);
+					nameField.setEnabled(true);
+					isNameEdittedButtonPressed = true;
+				}
+			}
+		});
+		
+		genderFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 290, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
+		genderFieldLabel.setFont(IDFont);
+		togglePanel = new JPanel();
+		male = new JToggleButton("Male", MyData.loadedData.get(0).getGender().equals("male"));
+		male.setBackground(Color.WHITE);
+		male.setFont(smallFont);
+		male.setForeground(new Color(61,205,91));
+		male.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED) {
+                	isGenderChanged = true;
+                	gender = "male";
+                }              
+            }
+        });
+		male.setEnabled(false);
+		female = new JToggleButton("Female",MyData.loadedData.get(0).getGender().equals("female"));
+		female.setBackground(Color.WHITE);
+		female.setFont(smallFont);
+		female.setForeground(new Color(61,205,91));
+		female.addItemListener(new ItemListener(){
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange()==ItemEvent.SELECTED) {
+                	isGenderChanged = true;
+                	gender = "female";
+                	
+                }              
+            }
+        });
+		female.setEnabled(false);
+		buttonGroup = new ButtonGroup();
+		container = new Container();
+		buttonGroup.add(male);
+		buttonGroup.add(female);
+		container.add(male);
+		container.add(female);
+		container.setBounds(MainFrame.windwowWidth* 4 / 100, 310, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		container.setLayout(new FlowLayout());
+		genderEditButton= new RoundButton("Edit");
+		genderEditButton.setBounds(MainFrame.windwowWidth * 88 / 100-40, 310, 50, MainFrame.windwowHeight * 5 / 100);
+		genderEditButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(isGenderEdittedButtonPressed) {
+					male.setEnabled(false);
+					female.setEnabled(false);
+					isGenderEdittedButtonPressed = false;
+					genderEditButton.setColor("Edit", new Color(61,205,91));
+				}
+				else {
+					genderEditButton.setColor("Save", Color.YELLOW);
+					male.setEnabled(true);
+					female.setEnabled(true);
+					isGenderEdittedButtonPressed = true;
+				}
+			}
+		});
+		
+		phoneNumberFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 335, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		phoneNumberFieldLabel.setFont(IDFont);
+		try {
+			formatter = new MaskFormatter("010-####-####");
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		phoneNumberField = new JFormattedTextField(MyData.loadedData.get(0).getPhoneNumber());
+		formatter.install(phoneNumberField);
+		phoneNumberField.setBounds(MainFrame.windwowWidth* 4 / 100, 360, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
+		phoneNumberField.setEnabled(false);
+		phoneNumberEditButton= new RoundButton("Edit");
+		phoneNumberEditButton.setBounds(MainFrame.windwowWidth * 88 / 100 - 40, 360, 50, MainFrame.windwowHeight * 5 / 100);
+		phoneNumberEditButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(isPhoneNumberEdittedButtonPressed) {
+					phoneNumberField.setEnabled(false);
+					isPhoneNumberEdittedButtonPressed = false;
+					phoneNumberEditButton.setColor("Edit", new Color(61,205,91));
+				}
+				else {
+					phoneNumberEditButton.setColor("Save", Color.YELLOW);
+					phoneNumberField.setEnabled(true);
+					isPhoneNumberEdittedButtonPressed = true;
+				}
+			}
+		});
+		
+		birthdayFieldLabel.setBounds(MainFrame.windwowWidth* 4 / 100, 390, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		birthdayFieldLabel.setFont(IDFont);
+		try {
+			dateFormatter = new MaskFormatter("####-##-##");
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.out.println((MyData.loadedData.get(0).getDate()));
+		birthdayField = new JFormattedTextField(MyData.loadedData.get(0).getDate());
+		dateFormatter.install(birthdayField);
+		birthdayField.setBounds(MainFrame.windwowWidth* 4 / 100, 415, MainFrame.windwowWidth * 88 / 100- 60, MainFrame.windwowHeight * 5 / 100);
+		birthdayField.setEnabled(false);
+		birthdayEditButton= new RoundButton("Edit");
+		birthdayEditButton.setBounds(MainFrame.windwowWidth * 88 / 100 - 40, 415, 50, MainFrame.windwowHeight * 5 / 100);
+		birthdayEditButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(isBirthdayEdittedButtonPressed) {
+					birthdayField.setEnabled(false);
+					isBirthdayEdittedButtonPressed = false;
+					birthdayEditButton.setColor("Edit", new Color(61,205,91));
+				}
+				else {
+					birthdayEditButton.setColor("Save", Color.YELLOW);
+					birthdayField.setEnabled(true);
+					isBirthdayEdittedButtonPressed = true;
+				}
+			}
+		});
+		
+		saveButton = new RoundButton("Save");
+		saveButton.setBounds(MainFrame.windwowWidth* 4 / 100, 460, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		saveButton.setFont(arialBoldFont);
+		saveButton.addActionListener(new ActionListener() {
+			
+		});
+		
+		logoutButton = new RoundButton("Log out");
+		logoutButton.setBounds(MainFrame.windwowWidth* 4 / 100, 495, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		logoutButton.setFont(arialBoldFont);
+		signoutButton = new RoundButton("Sign out");
+		signoutButton.setBounds(MainFrame.windwowWidth* 4 / 100, 530, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
+		signoutButton.setFont(arialBoldFont);
 		
 		this.add(label);
 		this.add(idFieldLabel);
@@ -402,8 +600,23 @@ public class UserPanel extends JPanel {
 		this.add(setVisiblityOnPasswordField);
 		this.add(editPasswordButton);
 		this.add(nameFieldLabel);
+		this.add(nameField);
+		this.add(nameEditButton);
 		this.add(genderFieldLabel);
+		this.add(container);
+		this.add(genderEditButton);
 		this.add(phoneNumberFieldLabel);
+		this.add(phoneNumberField);
+		this.add(phoneNumberEditButton);
 		this.add(birthdayFieldLabel);
+		this.add(birthdayField);
+		this.add(birthdayEditButton);
+		this.add(saveButton);
+		this.add(logoutButton);
+		this.add(signoutButton);
 	 }
+
+	public RoundButton getSignoutButton() {
+		return signoutButton;
+	}
 }

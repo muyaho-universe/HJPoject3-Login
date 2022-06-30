@@ -445,11 +445,23 @@ public class SignUpPanel extends JPanel {
 		}
 		months = new String[12];
 		for(int i = 0; i < 12; i ++) {
-			months[i] = i+1+"";
+			if(i < 10) {
+				months[i] ="0"+ i+1;
+			}
+			else {
+				months[i] = i+1+"";
+			}
+			
 		}
 		days = new String[31];
 		for(int i = 0; i < 31; i ++) {
-			days[i] = i+1+"";
+			if(i < 10) {
+				days[i] ="0"+ i+1;
+			}
+			else {
+				days[i] = i+1+"";
+			}
+			
 		}
 		year = "1950";
 		month = "1";

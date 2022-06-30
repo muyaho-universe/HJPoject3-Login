@@ -189,7 +189,7 @@ public class MainFrame extends JFrame {
 								
 				
 				wrongPasswordFrame.setVisible(true);
-				wrongPasswordFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				wrongPasswordFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				
 				buttonPanel.setSize(40, 5);
 			    buttonPanel.setLayout(new FlowLayout());
@@ -281,7 +281,7 @@ public class MainFrame extends JFrame {
 								
 				
 				lackOfInformationFrame.setVisible(true);
-				lackOfInformationFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+				lackOfInformationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				
 				buttonPanel.setSize(40, 5);
 			    buttonPanel.setLayout(new FlowLayout());
