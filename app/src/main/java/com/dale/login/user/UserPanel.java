@@ -20,6 +20,7 @@ import javax.swing.text.MaskFormatter;
 import com.dale.login.MainFrame;
 import com.dale.login.buttons.RoundButton;
 import com.dale.login.data.MyData;
+import com.dale.login.sql.SQLHandler;
 
 public class UserPanel extends JPanel {
 	Font arialBoldFont = new Font("Arial", Font.BOLD, 30);
@@ -583,12 +584,41 @@ public class UserPanel extends JPanel {
 		saveButton.setFont(arialBoldFont);
 		saveButton.addActionListener(new ActionListener() {
 			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(changedPassword == null) {
+					changedPassword = MyData.loadedData.get(0).getPassword();
+				}
+				SQLHandler.update(MyData.loadedData.get(0).getU_id(), changedPassword, nameField.getText(), gender, phoneNumberField.getText(), birthdayField.getText());
+				JFrame successFrame = new JFrame();
+				successFrame.setLayout(new BorderLayout());
+				JLabel label2 = new JLabel("Editted!");
+				RoundButton check = new RoundButton("OK");
+				check.setFont(arialFont);
+				check.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						successFrame.dispose();
+					}
+					
+				});
+				label2.setFont(arialBoldFont);
+				
+				successFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				successFrame.add(label2, BorderLayout.CENTER );
+				successFrame.add(check,BorderLayout.SOUTH);
+				
+				successFrame.setSize(400, 200);
+				successFrame.setVisible(true);
+			}
+			
 		});
 		
-		logoutButton = new RoundButton("Log out");
+		
 		logoutButton.setBounds(MainFrame.windwowWidth* 4 / 100, 495, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		logoutButton.setFont(arialBoldFont);
-		signoutButton = new RoundButton("Sign out");
+		
 		signoutButton.setBounds(MainFrame.windwowWidth* 4 / 100, 530, MainFrame.windwowWidth * 88 / 100, MainFrame.windwowHeight * 5 / 100);
 		signoutButton.setFont(arialBoldFont);
 		
@@ -615,7 +645,14 @@ public class UserPanel extends JPanel {
 		this.add(logoutButton);
 		this.add(signoutButton);
 	 }
-
+	public void createLoginAndSignout() {
+		logoutButton = new RoundButton("Log out");
+		signoutButton = new RoundButton("Sign out");
+	}
+	public RoundButton getLognoutButton() {
+		return logoutButton;
+	}
+	
 	public RoundButton getSignoutButton() {
 		return signoutButton;
 	}

@@ -1,6 +1,7 @@
 package com.dale.login;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -65,13 +66,15 @@ public class MainFrame extends JFrame {
 		special = new SpecialPanel();
 		userpanel = new UserPanel();
 		homePanel.createPanel();
+		userpanel.createLoginAndSignout();
 		
 		this.homePanel.getSignUpButton().addActionListener(new ToSignUp());
 		this.homePanel.getLoginButton().addActionListener(new LoginProcedure());
 		this.signUpPanel.getSignUpButton().addActionListener(new SignUp());
 		this.signUpPanel.getGoToBackButton().addActionListener(new ToHome());
 		this.special.getToHome().addActionListener(new ToHome());
-//		this.userpanel
+		this.userpanel.getLognoutButton().addActionListener(new Logout());
+		this.userpanel.getSignoutButton().addActionListener(new );
 		
 //		this.add(special);
 		
@@ -87,7 +90,8 @@ public class MainFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			MainFrame.this.homePanel.getIDField().setText(" ");
+			MainFrame.this.homePanel.getPasswordField().setText(" ");
 			MainFrame.this.getContentPane().removeAll();
 			MainFrame.this.getContentPane().add(signUpPanel);
 			revalidate();
@@ -100,11 +104,103 @@ public class MainFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			MainFrame.this.signUpPanel.getIDField().setText(" ");
+			MainFrame.this.signUpPanel.getPasswordField().setText(" ");
 			MainFrame.this.getContentPane().removeAll();
 			MainFrame.this.getContentPane().add(homePanel);
 			revalidate();
 			repaint();
+		}
+		
+	}
+	
+	class Logout implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JFrame logoutConfirm = new JFrame();
+			logoutConfirm.setVisible(true);
+			logoutConfirm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			logoutConfirm.setLayout(new BorderLayout());
+			logoutConfirm.setSize(400, 200);
+			JLabel message = new JLabel("Are you sure?");
+			message.setFont(arialBoldFont);
+			logoutConfirm.add(message, BorderLayout.CENTER);
+			JButton yes = new JButton("Yes");
+			JButton no = new JButton("No");
+			JPanel buttonPanel = new JPanel();
+			buttonPanel.setLayout(new FlowLayout());
+			yes.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					MyData.loadedData.clear();
+					MainFrame.this.getContentPane().removeAll();
+					MainFrame.this.getContentPane().add(homePanel);
+					revalidate();
+					repaint();
+					logoutConfirm.dispose();
+				}
+				
+			});
+			no.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					logoutConfirm.dispose();
+				}
+				
+			});
+			yes.setBackground(Color.WHITE);
+			no.setBackground(Color.GRAY);
+			buttonPanel.add(yes);
+			buttonPanel.add(no);
+			logoutConfirm.add(buttonPanel, BorderLayout.SOUTH);
+		}
+		
+	}
+	
+	class Signout implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JFrame signoutConfirm = new JFrame();
+			signoutConfirm.setVisible(true);
+			signoutConfirm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			signoutConfirm.setLayout(new BorderLayout());
+			signoutConfirm.setSize(400, 200);
+			JLabel message = new JLabel("We will miss you");
+			message.setFont(arialBoldFont);
+			signoutConfirm.add(message, BorderLayout.CENTER);
+			JButton yes = new JButton("Yes");
+			JButton no = new JButton("No");
+			JPanel buttonPanel = new JPanel();
+			buttonPanel.setLayout(new FlowLayout());
+			yes.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					SQLHandler.signOut(MyData.loadedData.get(0).getU_id());
+					MyData.loadedData.clear();
+					MainFrame.this.getContentPane().removeAll();
+					MainFrame.this.getContentPane().add(homePanel);
+					revalidate();
+					repaint();
+					signoutConfirm.dispose();
+				}
+				
+			});
+			no.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					signoutConfirm.dispose();
+				}
+				
+			});
+			yes.setFont(arialFont);
+			yes.setBackground(Color.WHITE);
+			no.setBackground(Color.GRAY);
+			no.setFont(arialFont);
+			buttonPanel.add(yes);
+			buttonPanel.add(no);
+			signoutConfirm.add(buttonPanel, BorderLayout.SOUTH);
 		}
 		
 	}
@@ -172,6 +268,7 @@ public class MainFrame extends JFrame {
 			    notExistedFrame.add(buttonPanel, BorderLayout.SOUTH);
 			}
 			if(whereToGo == -1) {
+				
 				MainFrame.this.setEnabled(false);
 				wrongPasswordFrame = new JFrame();
 				wrongPasswordFrame.setLayout(new BorderLayout());
@@ -200,7 +297,7 @@ public class MainFrame extends JFrame {
 			    toPasswordFinder.addActionListener(new ActionListener(){
 			    	@Override
 					public void actionPerformed(ActionEvent e) {
-			    		wrongPasswordFrame.hide();
+			    		wrongPasswordFrame.dispose();
 			    		MainFrame.this.setEnabled(true);
 //						MainFrame.this.getContentPane().removeAll();
 //						MainFrame.this.getContentPane().add(signUpPanel);
@@ -215,7 +312,7 @@ public class MainFrame extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
 						MainFrame.this.setEnabled(true);
-						wrongPasswordFrame.hide();
+						wrongPasswordFrame.dispose();
 					}
 			    });
 			    cancel.setFont(IDFont);
@@ -225,6 +322,8 @@ public class MainFrame extends JFrame {
 			    wrongPasswordFrame.add(buttonPanel, BorderLayout.SOUTH);
 			}
 			if(whereToGo == 1) {
+				MainFrame.this.homePanel.getIDField().setText(" ");
+				MainFrame.this.homePanel.getPasswordField().setText("");
 				MainFrame.this.getContentPane().removeAll();
 				userpanel.createPanel();
 				MainFrame.this.getContentPane().add(userpanel);
@@ -233,6 +332,8 @@ public class MainFrame extends JFrame {
 			}
 			
 			if(whereToGo == 2) {
+				MainFrame.this.homePanel.getIDField().setText(" ");
+				MainFrame.this.homePanel.getPasswordField().setText("");
 				MainFrame.this.getContentPane().removeAll();
 				MainFrame.this.getContentPane().add(adminPanel);
 				revalidate();
@@ -248,7 +349,7 @@ public class MainFrame extends JFrame {
 		boolean isBirthdaySelected = !MainFrame.this.signUpPanel.getBirthday().isEmpty();
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println(MainFrame.this.signUpPanel.getName());
+			
 			System.out.println("MainFrame.this.signUpPanel.isAgreed() "+ MainFrame.this.signUpPanel.isAgreed()+ " MainFrame.this.signUpPanel.isDoesPasswordHaveCapitol() "
 					+MainFrame.this.signUpPanel.isDoesPasswordHaveCapitol()+" MainFrame.this.signUpPanel.isDoesPasswordHaveLower() "+MainFrame.this.signUpPanel.isDoesPasswordHaveLower() +" MainFrame.this.signUpPanel.isDoesPasswordHaveNumber() "
 					+ MainFrame.this.signUpPanel.isDoesPasswordHaveNumber()+" MainFrame.this.signUpPanel.isGenderSelected() " +MainFrame.this.signUpPanel.isGenderSelected() +" MainFrame.this.signUpPanel.isIDConfirmed() " + MainFrame.this.signUpPanel.isIDConfirmed()
@@ -302,9 +403,6 @@ public class MainFrame extends JFrame {
 			    lackOfInformationFrame.add(context, BorderLayout.CENTER);
 			    lackOfInformationFrame.add(buttonPanel, BorderLayout.SOUTH);
 			}
-			
-			
-			
 		}
 		
 	}
